@@ -22,6 +22,7 @@ public class HibernateMappingTest
     @Resource
     SessionFactory sessionFactory;
 
+    //TODO: java.lang.AssertionError: Entity bstu.dplm.model.game.LocationProperty : org.hibernate.ObjectNotFoundException: No row with the given identifier exists: [bstu.dplm.model.game.Function#119]
     @Test
     @Transactional
     public void testMapping()

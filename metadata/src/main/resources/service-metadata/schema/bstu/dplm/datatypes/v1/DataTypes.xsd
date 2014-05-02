@@ -60,10 +60,10 @@
     <xs:complexType name="User">
         <xs:sequence>
             <xs:element name="id" type="xs:long"/>
-            <xs:element name="login" type="xs:string"/>
-            <xs:element name="password" type="xs:string"/>
-            <xs:element name="registration" type="xs:dateTime"/>
-            <xs:element name="lastSession" type="xs:dateTime"/>
+            <xs:element name="login" type="DT:UserLogin"/>
+            <xs:element name="password" type="DT:UserPassword"/>
+            <xs:element name="registration" type="DT:UserRegisterTime"/>
+            <xs:element name="lastSession" type="DT:UserLastSessionTime"/>
             <xs:element name="hairLook" type="DT:Look"/>
             <xs:element name="eyeLook" type="DT:Look"/>
             <xs:element name="bodyLook" type="DT:Look"/>
@@ -137,4 +137,45 @@
 
     <xs:element name="priviliges" type="DT:UserPriviliges" />
 
+    <xs:simpleType name="UserLogin">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="50"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="UserPassword">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="50"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="UserLastSessionTime">
+        <xs:restriction base="xs:dateTime">
+            <xs:maxLength value="50"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="UserRegisterTime">
+        <xs:restriction base="xs:dateTime">
+            <xs:maxLength value="50"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="AuthorizeParameters">
+        <xs:sequence>
+            <xs:element name="login" type="DT:UserLogin"/>
+            <xs:element name="password" type="DT:UserPassword"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="searchUserParameters">
+        <xs:choice>
+            <xs:element name="login" type="DT:UserLogin"/>
+            <xs:element name="registration" type="DT:UserRegisterTime"/>
+            <xs:element name="lastSession" type="DT:UserLastSessionTime"/>
+            <xs:element name="start" type="DT:UserLastSessionTime"/>
+            <xs:element name="end" type="DT:UserLastSessionTime"/>
+            <xs:element ref="DT:priviliges"/>
+        </xs:choice>
+    </xs:complexType>
 </xs:schema>

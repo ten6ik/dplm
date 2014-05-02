@@ -2,6 +2,7 @@ package bstu.dplm.model.user;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -27,6 +28,11 @@ public class Look {
 
     public void setLooklike(String looklike) {
         this.looklike = looklike;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("comment",comment ).append("looklike", looklike).toString();
     }
 
 /*    @Override

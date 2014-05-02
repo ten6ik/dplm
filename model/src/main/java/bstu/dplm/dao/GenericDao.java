@@ -29,4 +29,8 @@ public abstract class GenericDao<T> {
     public T getById(Serializable id) {
         return (T) sessionFactory.getCurrentSession().load(clazz, id);
     }
+
+    public void delete(T t) {
+        sessionFactory.getCurrentSession().delete(clazz);
+    }
 }

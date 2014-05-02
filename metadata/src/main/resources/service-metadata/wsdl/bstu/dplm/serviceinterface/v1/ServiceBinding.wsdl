@@ -45,8 +45,8 @@
             </wsdl:output>
         </wsdl:operation>
 
-        <wsdl:operation name="searchUser">
-            <soap:operation soapAction="searchUser" style="document"/>
+        <wsdl:operation name="searchUserByCriteria">
+            <soap:operation soapAction="searchUserByCriteria" style="document"/>
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -107,6 +107,16 @@
 
         <wsdl:operation name="getLocation">
             <soap:operation soapAction="getLocation" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+        </wsdl:operation>
+
+        <wsdl:operation name="authorize">
+            <soap:operation soapAction="authorize" style="document"/>
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>

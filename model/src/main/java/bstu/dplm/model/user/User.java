@@ -2,6 +2,7 @@ package bstu.dplm.model.user;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -130,6 +131,11 @@ public class User
     public void setPriviliges(Set<UserPriviliges> priviliges)
     {
         this.priviliges = priviliges;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("id",id ).append("login",login).append("password",password).append("registration",registration).append("lastSession",lastSession).append("priviliges",priviliges).append("eyeLook",eyeLook).append("hairLook",hairLook).append("bodyLook",bodyLook).toString();
     }
 
 /*    @Override

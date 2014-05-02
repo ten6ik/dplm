@@ -13,6 +13,7 @@ import edu.wsdl.bstu.dplm.serviceinterface.v1.ServiceInterface;
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 import javax.jws.WebParam;
@@ -71,13 +72,55 @@ public class WebService implements ServiceInterface {
     }
 
     @Override
-    public RetrieveUserByLoginResponseType searchUser(@WebParam(partName = "request", name = "searchUserRequest", targetNamespace = "http://edu/schema/bstu/dplm/servicetypes/v1") RetrieveUserByLoginRequestType request) {
-        return null;
+    public AuthorizeResponseType authorize(@WebParam(partName = "request", name = "authorizeRequest", targetNamespace = "http://edu/schema/bstu/dplm/servicetypes/v1") AuthorizeRequestType request) {
+
+        AuthorizeResponseType resp = new AuthorizeResponseType();
+
+        User user = userDao.authorize(request.getAuthorizeParameters().getLogin(), request.getAuthorizeParameters().getPassword());
+
+        resp.setUser(mapper.map(user, edu.schema.bstu.dplm.datatypes.v1.User.class));
+
+        return resp;
     }
+
+/*    @Override
+    public RetrieveUserByLoginResponseType searchUser(@WebParam(partName = "request", name = "searchUserRequest", targetNamespace = "http://edu/schema/bstu/dplm/servicetypes/v1") RetrieveUserByLoginRequestType request) {
+
+        RetrieveUserByLoginResponseType resp = new RetrieveUserByLoginResponseType();
+
+        return null;
+    }*/
 
     @Override
     public DeleteUserResponseType deleteUser(@WebParam(partName = "request", name = "deleteUserRequest", targetNamespace = "http://edu/schema/bstu/dplm/servicetypes/v1") DeleteUserRequestType request) {
-        return null;
+
+        Assert.notNull(request.getUser(), "User must not be null!");
+
+        DeleteUserResponseType resp = new DeleteUserResponseType();
+        User user = mapper.map(request.getUser(), User.class);
+
+        try {
+            userDao.delete(user);
+        }catch(Exception e){
+            resp.setResult(false);
+        }
+        resp.setResult(true);
+
+        return resp;
+    }
+
+    @Override
+    public RetrieveUserByCriteriaResponseType searchUserByCriteria(@WebParam(partName = "request", name = "searchUserByCriteriaRequest", targetNamespace = "http://edu/schema/bstu/dplm/servicetypes/v1") RetrieveUserByCriteriaRequestType request) {
+
+       RetrieveUserByCriteriaResponseType resp = new RetrieveUserByCriteriaResponseType();
+        bstu.dplm.model.user.UserPriviliges priv = mapper.map(request.getSearchUserCriteria().getPriviliges(), bstu.dplm.model.user.UserPriviliges.class);
+        List<User> list = userDao.searchUsers(request.getSearchUserCriteria().getLogin(), request.getSearchUserCriteria().getStart().getTime(), request.getSearchUserCriteria().getEnd().getTime(),priv);
+        List<edu.schema.bstu.dplm.datatypes.v1.User> respList = new ArrayList<edu.schema.bstu.dplm.datatypes.v1.User>();
+               for (User user : list) {
+                   respList.add(mapper.map(user, edu.schema.bstu.dplm.datatypes.v1.User.class));
+               }
+        resp.setUser(respList);
+        return resp;
     }
 
     @Override
@@ -162,7 +205,7 @@ public class WebService implements ServiceInterface {
 
         UpdateLocationResponseType response = new UpdateLocationResponseType();
 
-        Location location =  mapper.map(request.getLocation(), Location.class);
+        Location location = mapper.map(request.getLocation(), Location.class);
 
         location.fixReferences();
 

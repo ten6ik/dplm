@@ -43,11 +43,18 @@
         <wsdl:part name="response" element="ST:deleteUserResponse" />
     </wsdl:message>
 
-    <wsdl:message name="SearchUserRequest">
-        <wsdl:part name="request" element="ST:searchUserRequest" />
+    <wsdl:message name="SearchUserByCriteriaRequest">
+        <wsdl:part name="request" element="ST:searchUserByCriteriaRequest" />
     </wsdl:message>
-    <wsdl:message name="SearchUserResponse">
-        <wsdl:part name="response" element="ST:searchUserResponse" />
+    <wsdl:message name="SearchUserByCriteriaResponse">
+        <wsdl:part name="response" element="ST:searchUserByCriteriaResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="AuthorizeRequest">
+        <wsdl:part name="request" element="ST:authorizeRequest" />
+    </wsdl:message>
+    <wsdl:message name="AuthorizeResponse">
+        <wsdl:part name="response" element="ST:authorizeResponse" />
     </wsdl:message>
 
 
@@ -108,9 +115,9 @@
             <wsdl:input message="SI:DeleteUserRequest"/>
             <wsdl:output message="SI:DeleteUserResponse"/>
         </wsdl:operation>
-        <wsdl:operation name="searchUser">
-            <wsdl:input message="SI:SearchUserRequest"/>
-            <wsdl:output message="SI:SearchUserResponse"/>
+        <wsdl:operation name="searchUserByCriteria">
+            <wsdl:input message="SI:SearchUserByCriteriaRequest"/>
+            <wsdl:output message="SI:SearchUserByCriteriaResponse"/>
         </wsdl:operation>
         <wsdl:operation name="getPrivs">
             <wsdl:input message="SI:GetPrivsRequest"/>
@@ -138,6 +145,11 @@
         <wsdl:operation name="getLocation">
             <wsdl:input message="SI:GetLocationRequest"/>
             <wsdl:output message="SI:GetLocationResponse"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="authorize">
+            <wsdl:input message="SI:AuthorizeRequest"/>
+            <wsdl:output message="SI:AuthorizeResponse"/>
         </wsdl:operation>
 
     </wsdl:portType>

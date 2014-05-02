@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Date;
+import java.util.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/test.context.xml")
@@ -47,5 +47,59 @@ public class UserDaoTest
         user = dao.saveOrUpdate(user);
 
         System.out.println(user.getId());
+    }
+
+    @Test
+    public void authorize(){
+        User user = dao.authorize("raziel", "pass1");
+        System.out.println(user);
+    }
+
+    @Test
+    public void searchByLogin(){
+        String login = "login";
+
+        List<User> users = dao.searchUsers(login,null,null,null);
+
+        for (User user : users) {
+            System.out.println(user.getId());
+        }
+    }
+
+   // @Test
+    public void searchByPriv(){
+        UserPriviliges priv = new UserPriviliges();
+        priv.setId(1);
+        priv.setComment("low privs");
+        priv.setName("pupil");
+        User user = new User();
+        user.getPriviliges().add(priv);
+
+        List<User> users = dao.searchUsers(null,null,null,priv);
+
+        for (User us : users) {
+            System.out.println(us.getId());
+        }
+    }
+
+    @Test
+    public void searchByTime(){
+        Calendar start = new GregorianCalendar(2014, 3, 26);
+        Calendar end = new GregorianCalendar(2014, 3, 28);
+
+        List<User> users = dao.searchUsers(null,start.getTime(),end.getTime(),null);
+
+        for (User user : users) {
+            System.out.println("Between 26 april and 28 april: " +user.getId() + " with time " +user.getLastSession());
+        }
+        List<User> usersReg = dao.searchUsers(null,start.getTime(),null,null);
+        for (User user : usersReg) {
+            System.out.println("Reg time is 26 april: " +user.getId() + " with time " +user.getRegistration());
+        }
+
+        List<User> usersLastSession = dao.searchUsers(null,null,new GregorianCalendar(2014, 3, 27).getTime(),null);
+        for (User user : usersLastSession) {
+            System.out.println("Last Session time is 27 april: " +user.getId() + " with time " +user.getLastSession());
+        }
     }
 }

@@ -2,6 +2,7 @@ package bstu.dplm.model.user;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 import javax.persistence.*;
 
@@ -22,6 +23,11 @@ public class HairLook  extends Look
     public void setId(long id)
     {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("id",id ).toString();
     }
 
 /*    @Override

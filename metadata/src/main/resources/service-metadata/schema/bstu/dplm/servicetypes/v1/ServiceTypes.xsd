@@ -48,15 +48,15 @@
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="RetrieveUserByLoginRequestType">
+    <xs:complexType name="RetrieveUserByCriteriaRequestType">
         <xs:sequence>
-            <xs:element name="login" type="xs:string"/>
+            <xs:element name="searchUserCriteria" type="DT:searchUserParameters"/>
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="RetrieveUserByLoginResponseType">
+    <xs:complexType name="RetrieveUserByCriteriaResponseType">
         <xs:sequence>
-            <xs:element name="user" type="DT:User" minOccurs="0" maxOccurs="1" />
+            <xs:element name="user" type="DT:User" minOccurs="0" maxOccurs="unbounded" />
         </xs:sequence>
     </xs:complexType>
 
@@ -117,6 +117,22 @@
         </xs:sequence>
     </xs:complexType>
 
+
+    <xs:complexType name="AuthorizeRequestType">
+        <xs:sequence>
+            <xs:element name="authorizeParameters" type="DT:AuthorizeParameters" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="AuthorizeResponseType">
+        <xs:sequence>
+            <xs:element name="user" type="DT:User" />
+        </xs:sequence>
+    </xs:complexType>
+
+
+
+
     <xs:element name="pingRequest" type="ST:PingRequestType" />
     <xs:element name="pingResponse" type="ST:PingResponseType" />
 
@@ -130,8 +146,8 @@
     <xs:element name="getLooksResponse" type="ST:RetrieveLooksResponseType" />
     <xs:element name="getUsersRequest" type="ST:RetrieveUsersRequestType" />
     <xs:element name="getUsersResponse" type="ST:RetrieveUsersResponseType" />
-    <xs:element name="searchUserRequest" type="ST:RetrieveUserByLoginRequestType" />
-    <xs:element name="searchUserResponse" type="ST:RetrieveUserByLoginResponseType" />
+    <xs:element name="searchUserByCriteriaRequest" type="ST:RetrieveUserByCriteriaRequestType" />
+    <xs:element name="searchUserByCriteriaResponse" type="ST:RetrieveUserByCriteriaResponseType" />
 
     <xs:element name="getLocationsRequest" type="ST:RetrieveLocationsRequestType" />
     <xs:element name="getLocationsResponse" type="ST:RetrieveLocationsResponseType" />
@@ -139,5 +155,8 @@
     <xs:element name="updateLocationResponse" type="ST:UpdateLocationResponseType" />
     <xs:element name="getLocationRequest" type="ST:GetLocationRequestType" />
     <xs:element name="getLocationResponse" type="ST:GetLocationResponseType" />
+
+    <xs:element name="authorizeRequest" type="ST:AuthorizeRequestType" />
+    <xs:element name="authorizeResponse" type="ST:AuthorizeResponseType" />
 
 </xs:schema>

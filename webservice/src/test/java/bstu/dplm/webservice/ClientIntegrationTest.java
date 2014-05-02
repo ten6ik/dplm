@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 import java.util.Calendar;
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/client.context.xml")
@@ -115,5 +116,35 @@ public class ClientIntegrationTest {
         GetLocationResponseType res = serviceInterface.getLocation(getLocationRequestType);
 
         return res.getLocation();
+    }
+
+    @Test
+    public void authorizeUserTest(){
+        User user;
+        AuthorizeRequestType request = new AuthorizeRequestType();
+        AuthorizeParameters parameters = new AuthorizeParameters();
+        parameters.setLogin("raziel");
+        parameters.setPassword("pass1");
+        request.setAuthorizeParameters(parameters);
+
+        AuthorizeResponseType resp = serviceInterface.authorize(request);
+        user = resp.getUser();
+        System.out.println(user.toString());
+        System.out.println("\n\n\t\tDone");
+    }
+
+    @Test
+    public void searchUserTest(){
+        List<User> users;
+        RetrieveUserByCriteriaRequestType request = new RetrieveUserByCriteriaRequestType();
+        SearchUserParameters parameters = new SearchUserParameters();
+        parameters.setLogin("login");
+        request.setSearchUserCriteria(parameters);
+
+        RetrieveUserByCriteriaResponseType resp = serviceInterface.searchUserByCriteria(request);
+        users = resp.getUser();
+        for(User user : users)
+        System.out.println(user.getId());
+        System.out.println("\n\n\t\tDone");
     }
 }
