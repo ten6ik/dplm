@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified"
+    elementFormDefault="unqualified" jaxb:version="2.0"
+    targetNamespace="http://edu/schema/bstu/dplm/datatypes/v1"
+    xmlns:DT="http://edu/schema/bstu/dplm/datatypes/v1"
+    xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:attributeGroup name="EventAttributeGroup">
+		<xs:attribute name="eventType" type="xs:string" use="required"/>
+		<xs:attribute name="eventSource" type="xs:string" use="required"/>
+		<xs:attribute name="eventSessionId" use="optional" type="xs:string"/>
+		<xs:attribute name="eventTimestamp" use="required" type="xs:dateTime"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="IdentificationAttributeGroup">
+		<xs:attribute name="idSource" type="DT:IdSource" use="required"/>
+		<xs:attribute name="idValue" type="xs:string" use="required"/>
+	</xs:attributeGroup>
+	<xs:simpleType name="IdSource">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PCR"/>
+			<xs:enumeration value="EID"/>
+			<xs:enumeration value="EMAIL"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="Identification">
+		<xs:attributeGroup ref="DT:IdentificationAttributeGroup"/>
+	</xs:complexType>
+	<xs:complexType name="Event">
+		<xs:sequence>
+			<xs:element name="eventContents" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="identification" type="DT:Identification" maxOccurs="unbounded" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="DT:EventAttributeGroup"/>
+	</xs:complexType>
+	<xs:complexType name="Search">
+		<xs:sequence>
+			<xs:element name="maxResults" type="xs:int" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identification" type="DT:Identification" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="lastSessionOnly" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="fromTimestamp" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+    <xs:complexType name="Look">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="comment" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="looklike" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="UserPriviliges">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="comment" type="xs:string"  minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="User">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="login" type="xs:string"/>
+            <xs:element name="password" type="xs:string"/>
+            <xs:element name="registration" type="xs:dateTime"/>
+            <xs:element name="lastSession" type="xs:dateTime"/>
+            <xs:element name="hairLook" type="DT:Look"/>
+            <xs:element name="eyeLook" type="DT:Look"/>
+            <xs:element name="bodyLook" type="DT:Look"/>
+            <xs:element ref="DT:priviliges" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="MapObject">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long" minOccurs="0"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="comment" type="xs:string"/>
+            <xs:element name="view" type="xs:string"/>
+            <xs:element name="function" type="DT:Function" maxOccurs="1" minOccurs="0"/>
+            <xs:element name="quiz" type="DT:Quiz" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Answer">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long" minOccurs="0"/>
+            <xs:element name="text" type="xs:string"/>
+            <xs:element name="isAnswer" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Question">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long" minOccurs="0"/>
+            <xs:element name="text" type="xs:string"/>
+            <xs:element name="answers" type="DT:Answer" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Quiz">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long" minOccurs="0"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="questions" type="DT:Question" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Function">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long" minOccurs="0"/>
+            <xs:element name="function" type="xs:string"/>
+            <xs:element name="comment" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Location">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long" minOccurs="0"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="comment" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="picture" type="xs:string"/>
+            <xs:element name="created" type="xs:dateTime"/>
+            <xs:element name="properties" type="DT:LocationProperties" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element name="idCreator" type="xs:long"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="LocationProperties">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long" minOccurs="0"/>
+            <xs:element name="x" type="xs:string"/>
+            <xs:element name="y" type="xs:string"/>
+            <xs:element name="mapObject" type="DT:MapObject"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="priviliges" type="DT:UserPriviliges" />
+
+</xs:schema>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:cxf="http://cxf.apache.org/core"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+    <import resource="classpath:META-INF/cxf/cxf.xml" />
+    <import resource="classpath*:META-INF/cxf/cxf-extension-http-jetty.xml" />
+    <import resource="classpath*:META-INF/cxf/cxf-extension-soap.xml" />
+    <import resource="classpath*:META-INF/cxf/cxf-extension-xml.xml" />
+
+    <jaxws:endpoint id="CXFHttpEndpointImpl"
+                    address="http://192.168.2.6:9999/Service"
+                    implementor="#BSTU:name=Service/http/WebService"
+                    implementorClass="bstu.dplm.webservice.WebService"
+                    endpointName="tns:ServicePortHTTP-ServiceContainer"
+                    serviceName="tns:ServiceProvider"
+                    xmlns:tns="http://edu/wsdl/bstu/dplm/serviceinterface/v1"
+                    depends-on="jettyHTTPServerEngineFactory">
+    </jaxws:endpoint>
+
+    <bean name="BSTU:name=Service/http/WebService" class="bstu.dplm.webservice.WebService" />
+
+    <cxf:bus>
+        <cxf:features>
+            <cxf:logging/>
+        </cxf:features>
+    </cxf:bus>
+
+    <bean id="jettyHTTPServerEngineFactory" class="org.apache.cxf.transport.http_jetty.JettyHTTPServerEngineFactory">
+        <property name="bus" ref="cxf"/>
+        <property name="enginesList">
+            <list>
+                <ref bean="jettyHTTPServerEngine"/>
+            </list>
+        </property>
+    </bean>
+    <bean id="threadingParameters" class="org.apache.cxf.transport.http_jetty.ThreadingParameters">
+        <property name="minThreads" value="1"/>
+        <property name="maxThreads" value="10"/>
+    </bean>
+    <bean id="jettyHTTPServerEngine" class="org.apache.cxf.transport.http_jetty.JettyHTTPServerEngine">
+        <property name="threadingParameters" ref="threadingParameters"/>
+        <property name="port" value="9999"/>
+    </bean>
+    <import resource="dozer.xml" />
+    <import resource="classpath:model.context.xml" />
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations" value="classpath:test.properties"/>
+    </bean>
+</beans>

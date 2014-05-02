@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+    xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+    xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:wsoap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+    xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:SI="http://edu/wsdl/bstu/dplm/serviceinterface/v1"
+    xmlns:ST="http://edu/schema/bstu/dplm/servicetypes/v1"
+    targetNamespace="http://edu/wsdl/bstu/dplm/serviceinterface/v1">
+
+    <wsdl:types>
+        <xs:schema targetNamespace="http://edu/schema/bstu/dplm/servicetypes/v1"
+            xmlns:ST="http://edu/schema/bstu/dplm/servicetypes/v1">
+            <xs:import namespace="http://edu/schema/bstu/dplm/servicetypes/v1"
+                schemaLocation="../../../../../schema/bstu/dplm/servicetypes/v1/ServiceTypes.xsd"/>
+        </xs:schema>
+    </wsdl:types>
+
+    <wsdl:message name="PingRequest">
+        <wsdl:part name="request" element="ST:pingRequest" />
+    </wsdl:message>
+    <wsdl:message name="PingResponse">
+        <wsdl:part name="response" element="ST:pingResponse" />
+    </wsdl:message>
+
+
+    <!--User -->
+    <wsdl:message name="UpdateUserRequest">
+        <wsdl:part name="request" element="ST:updateUserRequest" />
+    </wsdl:message>
+    <wsdl:message name="UpdateUserResponse">
+        <wsdl:part name="response" element="ST:updateUserResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="DeleteUserRequest">
+        <wsdl:part name="request" element="ST:deleteUserRequest" />
+    </wsdl:message>
+    <wsdl:message name="DeleteUserResponse">
+        <wsdl:part name="response" element="ST:deleteUserResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="SearchUserRequest">
+        <wsdl:part name="request" element="ST:searchUserRequest" />
+    </wsdl:message>
+    <wsdl:message name="SearchUserResponse">
+        <wsdl:part name="response" element="ST:searchUserResponse" />
+    </wsdl:message>
+
+
+    <!---->
+    <wsdl:message name="GetPrivsRequest">
+        <wsdl:part name="request" element="ST:getPrivsRequest" />
+    </wsdl:message>
+    <wsdl:message name="GetPrivsResponse">
+        <wsdl:part name="response" element="ST:getPrivsResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="GetLooksRequest">
+        <wsdl:part name="request" element="ST:getLooksRequest" />
+    </wsdl:message>
+    <wsdl:message name="GetLooksResponse">
+        <wsdl:part name="response" element="ST:getLooksResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="GetUsersRequest">
+        <wsdl:part name="request" element="ST:getUsersRequest" />
+    </wsdl:message>
+    <wsdl:message name="GetUsersResponse">
+        <wsdl:part name="response" element="ST:getUsersResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="GetLocationsRequest">
+        <wsdl:part name="request" element="ST:getLocationsRequest" />
+    </wsdl:message>
+    <wsdl:message name="GetLocationsResponse">
+        <wsdl:part name="response" element="ST:getLocationsResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="UpdateLocationRequest">
+        <wsdl:part name="request" element="ST:updateLocationRequest" />
+    </wsdl:message>
+    <wsdl:message name="UpdateLocationResponse">
+        <wsdl:part name="response" element="ST:updateLocationResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="GetLocationRequest">
+        <wsdl:part name="request" element="ST:getLocationRequest" />
+    </wsdl:message>
+    <wsdl:message name="GetLocationResponse">
+        <wsdl:part name="response" element="ST:getLocationResponse" />
+    </wsdl:message>
+
+    <!-- PORT TYPES -->
+    <wsdl:portType name="ServiceInterface">
+        <wsdl:operation name="ping">
+            <wsdl:input message="SI:PingRequest"/>
+            <wsdl:output message="SI:PingResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="updateUser">
+            <wsdl:input message="SI:UpdateUserRequest"/>
+            <wsdl:output message="SI:UpdateUserResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="deleteUser">
+            <wsdl:input message="SI:DeleteUserRequest"/>
+            <wsdl:output message="SI:DeleteUserResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="searchUser">
+            <wsdl:input message="SI:SearchUserRequest"/>
+            <wsdl:output message="SI:SearchUserResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="getPrivs">
+            <wsdl:input message="SI:GetPrivsRequest"/>
+            <wsdl:output message="SI:GetPrivsResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="getLooks">
+            <wsdl:input message="SI:GetLooksRequest"/>
+            <wsdl:output message="SI:GetLooksResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="getUsers">
+            <wsdl:input message="SI:GetUsersRequest"/>
+            <wsdl:output message="SI:GetUsersResponse"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getLocations">
+            <wsdl:input message="SI:GetLocationsRequest"/>
+            <wsdl:output message="SI:GetLocationsResponse"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="updateLocation">
+            <wsdl:input message="SI:UpdateLocationRequest"/>
+            <wsdl:output message="SI:UpdateLocationResponse"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getLocation">
+            <wsdl:input message="SI:GetLocationRequest"/>
+            <wsdl:output message="SI:GetLocationResponse"/>
+        </wsdl:operation>
+
+    </wsdl:portType>
+
+</wsdl:definitions>

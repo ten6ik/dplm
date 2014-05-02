@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+    xmlns="http://www.w3.org/2001/XMLSchema"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:ST="http://edu/schema/bstu/dplm/servicetypes/v1"
+    xmlns:DT="http://edu/schema/bstu/dplm/datatypes/v1"
+    targetNamespace="http://edu/schema/bstu/dplm/servicetypes/v1"
+    elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+    <xs:import namespace="http://edu/schema/bstu/dplm/datatypes/v1" schemaLocation="../../datatypes/v1/DataTypes.xsd"/>
+
+	<xs:complexType name="PingRequestType">
+
+	</xs:complexType>
+
+	<xs:complexType name="PingResponseType">
+        <xs:sequence>
+            <xs:element name="data" type="xs:string" />
+        </xs:sequence>
+	</xs:complexType>
+
+    <xs:complexType name="RetrievePriviligesRequestType">
+    </xs:complexType>
+
+    <xs:complexType name="RetrievePriviligesResponseType">
+        <xs:sequence>
+            <xs:element ref="DT:priviliges" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RetrieveLooksRequestType">
+    </xs:complexType>
+
+    <xs:complexType name="RetrieveLooksResponseType">
+        <xs:sequence>
+            <xs:element name="eyeLook" type="DT:Look" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="bodyLook" type="DT:Look" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="hairLook" type="DT:Look" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RetrieveUsersRequestType">
+    </xs:complexType>
+
+    <xs:complexType name="RetrieveUsersResponseType">
+        <xs:sequence>
+            <xs:element name="users" type="DT:User" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RetrieveUserByLoginRequestType">
+        <xs:sequence>
+            <xs:element name="login" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RetrieveUserByLoginResponseType">
+        <xs:sequence>
+            <xs:element name="user" type="DT:User" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="UpdateUserRequestType">
+        <xs:sequence>
+            <xs:element name="user" type="DT:User"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="UpdateUserResponseType">
+        <xs:sequence>
+            <xs:element name="user" type="DT:User"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DeleteUserRequestType">
+        <xs:sequence>
+            <xs:element name="user" type="DT:User"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DeleteUserResponseType">
+        <xs:sequence>
+            <xs:element name="result" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RetrieveLocationsRequestType">
+    </xs:complexType>
+
+    <xs:complexType name="RetrieveLocationsResponseType">
+        <xs:sequence>
+            <xs:element name="location" type="DT:Location" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="UpdateLocationRequestType">
+        <xs:sequence>
+            <xs:element name="location" type="DT:Location" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="UpdateLocationResponseType">
+        <xs:sequence>
+            <xs:element name="location" type="DT:Location" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="GetLocationRequestType">
+        <xs:sequence>
+            <xs:element name="id" minOccurs="1" type="xs:long" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="GetLocationResponseType">
+        <xs:sequence>
+            <xs:element name="location" type="DT:Location" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="pingRequest" type="ST:PingRequestType" />
+    <xs:element name="pingResponse" type="ST:PingResponseType" />
+
+    <xs:element name="updateUserRequest" type="ST:UpdateUserRequestType" />
+    <xs:element name="updateUserResponse" type="ST:UpdateUserResponseType" />
+    <xs:element name="deleteUserRequest" type="ST:DeleteUserRequestType" />
+    <xs:element name="deleteUserResponse" type="ST:DeleteUserResponseType" />
+    <xs:element name="getPrivsRequest" type="ST:RetrievePriviligesRequestType" />
+    <xs:element name="getPrivsResponse" type="ST:RetrievePriviligesResponseType" />
+    <xs:element name="getLooksRequest" type="ST:RetrieveLooksRequestType" />
+    <xs:element name="getLooksResponse" type="ST:RetrieveLooksResponseType" />
+    <xs:element name="getUsersRequest" type="ST:RetrieveUsersRequestType" />
+    <xs:element name="getUsersResponse" type="ST:RetrieveUsersResponseType" />
+    <xs:element name="searchUserRequest" type="ST:RetrieveUserByLoginRequestType" />
+    <xs:element name="searchUserResponse" type="ST:RetrieveUserByLoginResponseType" />
+
+    <xs:element name="getLocationsRequest" type="ST:RetrieveLocationsRequestType" />
+    <xs:element name="getLocationsResponse" type="ST:RetrieveLocationsResponseType" />
+    <xs:element name="updateLocationRequest" type="ST:UpdateLocationRequestType" />
+    <xs:element name="updateLocationResponse" type="ST:UpdateLocationResponseType" />
+    <xs:element name="getLocationRequest" type="ST:GetLocationRequestType" />
+    <xs:element name="getLocationResponse" type="ST:GetLocationResponseType" />
+
+</xs:schema>

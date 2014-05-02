@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<wsdl:definitions
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:jms="http://cxf.apache.org/transports/jms"
+    xmlns:SI="http://edu/wsdl/bstu/dplm/serviceinterface/v1"
+    targetNamespace="http://edu/wsdl/bstu/dplm/serviceinterface/v1">
+
+    <wsdl:import namespace="http://edu/wsdl/bstu/dplm/serviceinterface/v1"
+        location="../../../../../wsdl/bstu/dplm/serviceinterface/v1/Service.wsdl" />
+
+    <wsdl:service name="ServiceProvider">
+        <wsdl:port name="ServicePortHttp-ServiceContainer" binding="SI:ServiceSoap-HttpBinding">
+            <jms:address location=""/>
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>
