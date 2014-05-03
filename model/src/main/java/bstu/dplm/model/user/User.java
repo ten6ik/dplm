@@ -1,10 +1,22 @@
 package bstu.dplm.model.user;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.Cascade;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,9 +35,10 @@ public class User
     private EyeLook eyeLook;
     private BodyLook bodyLook;
     private Set<UserPriviliges> priviliges = new HashSet<UserPriviliges>();
+    private Set<UserResult> results = new HashSet<UserResult>();
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_USR", precision = 10, scale = 0)
     public long getId()
     {
@@ -119,10 +132,8 @@ public class User
         this.bodyLook = bodyLook;
     }
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name = "user_privs",
-            joinColumns = @JoinColumn(name = "ID_USR", nullable = false, updatable = false ),
-            inverseJoinColumns = @JoinColumn(name = "ID_PRIV", nullable = false, updatable = false))
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(name = "user_privs", joinColumns = @JoinColumn(name = "ID_USR", nullable = false, updatable = false), inverseJoinColumns = @JoinColumn(name = "ID_PRIV", nullable = false, updatable = false))
     public Set<UserPriviliges> getPriviliges()
     {
         return priviliges;
@@ -133,25 +144,37 @@ public class User
         this.priviliges = priviliges;
     }
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this).append("id",id ).append("login",login).append("password",password).append("registration",registration).append("lastSession",lastSession).append("priviliges",priviliges).append("eyeLook",eyeLook).append("hairLook",hairLook).append("bodyLook",bodyLook).toString();
+    @OneToMany
+    @JoinColumn(name = "ID_USR")
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    public Set<UserResult> getResults()
+    {
+        return results;
     }
 
-/*    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        User user = (User) o;
-
-        return new EqualsBuilder().append(id, user.id).isEquals();
+    public void setResults(Set<UserResult> results)
+    {
+        this.results = results;
     }
 
     @Override
-    public int hashCode() {
-        {
-            return new HashCodeBuilder(6, 48).append(id).toHashCode();
-        }
-    }*/
+    public String toString()
+    {
+        return new ToStringBuilder(this).append("id", id).append("login", login).append("password", password)
+                .append("registration", registration).append("lastSession", lastSession)
+                .append("priviliges", priviliges).append("eyeLook", eyeLook).append("hairLook", hairLook)
+                .append("bodyLook", bodyLook).toString();
+    }
+
+    /*
+     * @Override public boolean equals(Object o) { if (this == o) return true;
+     * if (o == null || getClass() != o.getClass()) return false;
+     * 
+     * User user = (User) o;
+     * 
+     * return new EqualsBuilder().append(id, user.id).isEquals(); }
+     * 
+     * @Override public int hashCode() { { return new HashCodeBuilder(6,
+     * 48).append(id).toHashCode(); } }
+     */
 }
