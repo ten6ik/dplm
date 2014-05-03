@@ -173,8 +173,6 @@
             <xs:element name="login" type="DT:UserLogin"/>
             <xs:element name="registration" type="DT:UserRegisterTime"/>
             <xs:element name="lastSession" type="DT:UserLastSessionTime"/>
-            <xs:element name="start" type="DT:UserLastSessionTime"/>
-            <xs:element name="end" type="DT:UserLastSessionTime"/>
             <xs:element ref="DT:priviliges"/>
         </xs:choice>
     </xs:complexType>

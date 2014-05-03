@@ -40,7 +40,7 @@ public class UserDao extends GenericDao<User> {
             searchCriteria.add(Restrictions.eq("lastSession", endPeriodOrLastSessionTime));
         }
         if(priv != null) {
-            searchCriteria.add(Restrictions.eq("priviliges", priv));
+            searchCriteria.createAlias("priviliges", "priv").add(Restrictions.eq("priv.id", priv.getId()));
         }
 
        return searchCriteria.list();

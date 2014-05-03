@@ -66,10 +66,10 @@ public class UserDaoTest
         }
     }
 
-   // @Test
+    @Test
     public void searchByPriv(){
         UserPriviliges priv = new UserPriviliges();
-        priv.setId(1);
+        priv.setId(2);
         priv.setComment("low privs");
         priv.setName("pupil");
         User user = new User();

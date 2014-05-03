@@ -18,6 +18,7 @@ import org.springframework.util.Assert;
 import javax.annotation.Resource;
 import javax.jws.WebParam;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Transactional
@@ -83,14 +84,6 @@ public class WebService implements ServiceInterface {
         return resp;
     }
 
-/*    @Override
-    public RetrieveUserByLoginResponseType searchUser(@WebParam(partName = "request", name = "searchUserRequest", targetNamespace = "http://edu/schema/bstu/dplm/servicetypes/v1") RetrieveUserByLoginRequestType request) {
-
-        RetrieveUserByLoginResponseType resp = new RetrieveUserByLoginResponseType();
-
-        return null;
-    }*/
-
     @Override
     public DeleteUserResponseType deleteUser(@WebParam(partName = "request", name = "deleteUserRequest", targetNamespace = "http://edu/schema/bstu/dplm/servicetypes/v1") DeleteUserRequestType request) {
 
@@ -99,26 +92,36 @@ public class WebService implements ServiceInterface {
         DeleteUserResponseType resp = new DeleteUserResponseType();
         User user = mapper.map(request.getUser(), User.class);
 
-        try {
-            userDao.delete(user);
-        }catch(Exception e){
-            resp.setResult(false);
-        }
-        resp.setResult(true);
-
-        return resp;
+        return null;
     }
 
     @Override
     public RetrieveUserByCriteriaResponseType searchUserByCriteria(@WebParam(partName = "request", name = "searchUserByCriteriaRequest", targetNamespace = "http://edu/schema/bstu/dplm/servicetypes/v1") RetrieveUserByCriteriaRequestType request) {
 
-       RetrieveUserByCriteriaResponseType resp = new RetrieveUserByCriteriaResponseType();
-        bstu.dplm.model.user.UserPriviliges priv = mapper.map(request.getSearchUserCriteria().getPriviliges(), bstu.dplm.model.user.UserPriviliges.class);
-        List<User> list = userDao.searchUsers(request.getSearchUserCriteria().getLogin(), request.getSearchUserCriteria().getStart().getTime(), request.getSearchUserCriteria().getEnd().getTime(),priv);
+        RetrieveUserByCriteriaResponseType resp = new RetrieveUserByCriteriaResponseType();
+        bstu.dplm.model.user.UserPriviliges priv = null;
+        String login = null;
+        Date start = null;
+        Date end = null;
+        if (request.getSearchUserCriteria().getPriviliges() != null) {
+            priv = mapper.map(request.getSearchUserCriteria().getPriviliges(), bstu.dplm.model.user.UserPriviliges.class);
+        }
+        if (request.getSearchUserCriteria().getLogin() != null) {
+            login = request.getSearchUserCriteria().getLogin();
+        }
+
+        if (request.getSearchUserCriteria().getRegistration() != null) {
+            start = request.getSearchUserCriteria().getRegistration().getTime();
+        }
+        if (request.getSearchUserCriteria().getLastSession() != null) {
+            end = request.getSearchUserCriteria().getLastSession().getTime();
+        }
+
+        List<User> list = userDao.searchUsers(login, start, end, priv);
         List<edu.schema.bstu.dplm.datatypes.v1.User> respList = new ArrayList<edu.schema.bstu.dplm.datatypes.v1.User>();
-               for (User user : list) {
-                   respList.add(mapper.map(user, edu.schema.bstu.dplm.datatypes.v1.User.class));
-               }
+        for (User user : list) {
+            respList.add(mapper.map(user, edu.schema.bstu.dplm.datatypes.v1.User.class));
+        }
         resp.setUser(respList);
         return resp;
     }
