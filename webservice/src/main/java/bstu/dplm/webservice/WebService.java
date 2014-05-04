@@ -1,12 +1,10 @@
 package bstu.dplm.webservice;
 
 import bstu.dplm.dao.*;
+import bstu.dplm.model.game.Answer;
 import bstu.dplm.model.game.Location;
 import bstu.dplm.model.game.MapObject;
-import bstu.dplm.model.user.BodyLook;
-import bstu.dplm.model.user.EyeLook;
-import bstu.dplm.model.user.HairLook;
-import bstu.dplm.model.user.User;
+import bstu.dplm.model.user.*;
 import edu.schema.bstu.dplm.servicetypes.v1.AuthorizeRequestType;
 import edu.schema.bstu.dplm.servicetypes.v1.AuthorizeResponseType;
 import edu.schema.bstu.dplm.servicetypes.v1.DeleteUserRequestType;
@@ -63,6 +61,43 @@ public class WebService implements ServiceInterface {
     LocationDao locationDao;
     @Resource
     MapObjectDao mapObjectDao;
+    @Resource
+    UserResultsDao userResultDao;
+
+    @Override
+    public UpdateUserResultsResponseType updateUserResults(@WebParam(partName = "request", name = "updateUserResultsRequest", targetNamespace = "http://edu/schema/bstu/dplm/servicetypes/v1") UpdateUserResultsRequestType request) {
+
+        UpdateUserResultsResponseType resp = new UpdateUserResultsResponseType();
+
+        UserResult userResult = mapper.map(request.getUserResult(), UserResult.class);
+
+        if (request.getUserResult().getAnswer() == null && request.getUserResult().getAnswerText() == null) {
+
+            throw new IllegalArgumentException("Answer is expected");
+        }
+        for(AnswerType answer : request.getUserResult().getQuestion().getAnswers()){
+
+            if(answer.getIsAnswer()){
+                if((userResult.getAnswer() != null && userResult.getAnswer().getId() == answer.getId())){
+                    userResult.setIsRight(true);
+                }
+                else if(userResult.getAnswerText().equals(answer.getText())){
+                    userResult.setIsRight(true);
+
+                    userResult.setAnswer(new Answer());
+                    userResult.getAnswer().setId(answer.getId());
+                }else{
+                    userResult.setIsRight(false);
+                }
+            }
+        }
+
+        UserResultsType userResultsType = mapper.map(userResultDao.saveOrUpdate(userResult), UserResultsType.class);
+
+        resp.setUserResult(userResultsType);
+
+        return resp;
+    }
 
     @Override
     public UpdateUserResponseType updateUser(@WebParam(partName = "request", name = "updateUserRequest", targetNamespace = "http://edu/schema/bstu/dplm/servicetypes/v1") UpdateUserRequestType request) {
@@ -70,8 +105,6 @@ public class WebService implements ServiceInterface {
         UpdateUserResponseType resp = new UpdateUserResponseType();
 
         User daoUser = mapper.map(request.getUser(), User.class);
-
-        daoUser.updateReferences();
 
         User updatedDaoUser = userDao.saveOrUpdate(daoUser);
 
@@ -96,6 +129,39 @@ public class WebService implements ServiceInterface {
         resp.setUsers(responseList);
 
         return resp;
+    }
+
+    @Override
+    public RetrieveUserResponseType retrieveUser(@WebParam(partName = "request", name = "retrieveUserRequest", targetNamespace = "http://edu/schema/bstu/dplm/servicetypes/v1") RetrieveUserRequestType request) {
+        RetrieveUserResponseType resp = new RetrieveUserResponseType();
+
+        User user;
+
+        if (request.getId() != null) {
+            user = userDao.getById(request.getId());
+        } else if (request.getLogin() != null) {
+            user = userDao.searchUsers(request.getLogin(), null, null, null).get(0);
+        } else {
+            throw new IllegalArgumentException("user id or login expected");
+        }
+
+        resp.setUser(mapper.map(user, UserType.class));
+
+        return resp;
+    }
+
+    @Override
+    public RetrieveUserResultsResponseType retrieveUserResults(@WebParam(partName = "request", name = "retrieveUserResultsRequest", targetNamespace = "http://edu/schema/bstu/dplm/servicetypes/v1") RetrieveUserResultsRequestType request) {
+
+        RetrieveUserResultsResponseType response = new RetrieveUserResultsResponseType();
+
+        List<UserResult> list = userResultDao.getUserResults(request.getUserId());
+
+        for (UserResult userResult : list) {
+            response.getUserResult().add(mapper.map(userResult, UserResultsType.class));
+        }
+
+        return response;
     }
 
     @Override

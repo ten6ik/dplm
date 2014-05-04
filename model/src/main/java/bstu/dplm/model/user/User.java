@@ -35,7 +35,6 @@ public class User
     private EyeLook eyeLook;
     private BodyLook bodyLook;
     private Set<UserPriviliges> priviliges = new HashSet<UserPriviliges>();
-    private Set<UserResult> results = new HashSet<UserResult>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -145,25 +144,6 @@ public class User
         this.priviliges = priviliges;
     }
 
-    @OneToMany(mappedBy = "user")
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-    public Set<UserResult> getResults()
-    {
-        return results;
-    }
-
-    public void setResults(Set<UserResult> results)
-    {
-        this.results = results;
-    }
-
-    public void updateReferences()
-    {
-        for (UserResult result : results)
-        {
-            result.setUser(this);
-        }
-    }
 
     @Override
     public String toString()

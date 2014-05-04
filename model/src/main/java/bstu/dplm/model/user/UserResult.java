@@ -26,7 +26,7 @@ public class UserResult
     Question question;
     Answer answer;
     Location location;
-    User user;
+    Long userId;
 
     @Id
     @Column(name = "ID_RESULT", precision = 11, scale = 0)
@@ -121,16 +121,14 @@ public class UserResult
         this.location = location;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "ID_USR", nullable = false)
-    @Cascade(CascadeType.SAVE_UPDATE)
-    public User getUser()
+    @Column(name = "ID_USR", nullable = false, precision = 11, scale = 0)
+    public Long getUserId()
     {
-        return user;
+        return userId;
     }
 
-    public void setUser(User user)
+    public void setUserId(Long userId)
     {
-        this.user = user;
+        this.userId = userId;
     }
 }

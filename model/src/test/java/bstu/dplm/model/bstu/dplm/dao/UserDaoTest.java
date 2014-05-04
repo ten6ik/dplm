@@ -42,7 +42,6 @@ public class UserDaoTest
         UserPriviliges userPriviliges = new UserPriviliges();
         userPriviliges.setName("Read");
         userPriviliges.setComment("Privileage to read");
-        //user.getPriviliges().add(userPriviliges);
 
         user = dao.saveOrUpdate(user);
 

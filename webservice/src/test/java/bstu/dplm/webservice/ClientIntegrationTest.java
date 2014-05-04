@@ -1,22 +1,10 @@
 package bstu.dplm.webservice;
 
 import edu.schema.bstu.dplm.datatypes.v1.UserResultsType;
-import edu.schema.bstu.dplm.servicetypes.v1.AuthorizeRequestType;
-import edu.schema.bstu.dplm.servicetypes.v1.AuthorizeResponseType;
-import edu.schema.bstu.dplm.servicetypes.v1.GetLocationRequestType;
-import edu.schema.bstu.dplm.servicetypes.v1.GetLocationResponseType;
-import edu.schema.bstu.dplm.servicetypes.v1.RetrieveLocationsRequestType;
-import edu.schema.bstu.dplm.servicetypes.v1.RetrieveLocationsResponseType;
-import edu.schema.bstu.dplm.servicetypes.v1.RetrieveUserByCriteriaRequestType;
-import edu.schema.bstu.dplm.servicetypes.v1.RetrieveUserByCriteriaResponseType;
-import edu.schema.bstu.dplm.servicetypes.v1.UpdateLocationRequestType;
-import edu.schema.bstu.dplm.servicetypes.v1.UpdateLocationResponseType;
-import edu.schema.bstu.dplm.servicetypes.v1.UpdateUserRequestType;
-import edu.schema.bstu.dplm.servicetypes.v1.UpdateUserResponseType;
-import bstu.dplm.model.game.*;
-import edu.schema.bstu.dplm.datatypes.v1.*;
 import edu.schema.bstu.dplm.servicetypes.v1.*;
+import edu.schema.bstu.dplm.datatypes.v1.*;
 import edu.wsdl.bstu.dplm.serviceinterface.v1.ServiceInterface;
+import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -181,12 +169,34 @@ public class ClientIntegrationTest {
 
         UserResultsType userResult = new UserResultsType();
         userResult.setSessionId("Some session " + new Date());
+        userResult.setAnswerText("No");
         userResult.setLocation(location);
         userResult.setQuiz(location.getProperties().get(0).getMapObject().getQuiz().get(0));
         userResult.setQuestion(userResult.getQuiz().getQuestions().get(0));
-        user.getResults().add(userResult);
+        userResult.setUserId(user.getId());
 
-        user = updateUser(user);
+        int before = getUserResults(user.getId()).size();
+
+        UpdateUserResultsRequestType resultsRequestType = new UpdateUserResultsRequestType();
+        resultsRequestType.setUserResult(userResult);
+
+        serviceInterface.updateUserResults(resultsRequestType);
+
+        int after = getUserResults(user.getId()).size();
+
+        assertThat("not added", after-before, is(1));
+
+
+       // user = updateUser(user);
+    }
+
+
+    List<UserResultsType> getUserResults(long userId){
+        RetrieveUserResultsRequestType retrieveUserResultsRequestType = new RetrieveUserResultsRequestType();
+        retrieveUserResultsRequestType.setUserId(userId);
+
+        RetrieveUserResultsResponseType responseUR = serviceInterface.retrieveUserResults(retrieveUserResultsRequestType);
+        return responseUR.getUserResult();
     }
 
     UserType updateUser(UserType user)

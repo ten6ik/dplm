@@ -129,8 +129,6 @@
         </xs:sequence>
     </xs:complexType>
 
-
-
     <xs:complexType name="UpdateMapObjectRequestType">
         <xs:sequence>
             <xs:element name="mapObject" type="DT:MapObjectType" />
@@ -140,6 +138,43 @@
     <xs:complexType name="UpdateMapObjectResponseType">
         <xs:sequence>
             <xs:element name="mapObject" type="DT:MapObjectType" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="UpdateUserResultsRequestType">
+        <xs:sequence>
+            <xs:element name="userResult" type="DT:UserResultsType" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="UpdateUserResultsResponseType">
+        <xs:sequence>
+            <xs:element name="userResult" type="DT:UserResultsType" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RetrieveUserResultsRequestType">
+        <xs:sequence>
+            <element name="userId" type="xs:long" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RetrieveUserResultsResponseType">
+        <xs:sequence>
+            <xs:element name="userResult" type="DT:UserResultsType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RetrieveUserRequestType">
+        <xs:choice>
+            <xs:element name="id" type="xs:long" />
+            <xs:element name="login" type="xs:string" />
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:complexType name="RetrieveUserResponseType">
+        <xs:sequence>
+            <xs:element name="user" type="DT:UserType" />
         </xs:sequence>
     </xs:complexType>
 
@@ -169,8 +204,15 @@
 
     <xs:element name="authorizeRequest" type="ST:AuthorizeRequestType" />
     <xs:element name="authorizeResponse" type="ST:AuthorizeResponseType" />
-
     <xs:element name="updateMapObjectRequest" type="ST:UpdateMapObjectRequestType" />
     <xs:element name="updateMapObjectResponse" type="ST:UpdateMapObjectResponseType" />
 
+    <xs:element name="updateUserResultsRequest" type="ST:UpdateUserResultsRequestType" />
+    <xs:element name="updateUserResultsResponse" type="ST:UpdateUserResultsResponseType" />
+
+    <xs:element name="retrieveUserResultsRequest" type="ST:RetrieveUserResultsRequestType" />
+    <xs:element name="retrieveUserResultsResponse" type="ST:RetrieveUserResultsResponseType" />
+
+    <xs:element name="retrieveUserRequest" type="ST:RetrieveUserRequestType" />
+    <xs:element name="retrieveUserResponse" type="ST:RetrieveUserResponseType" />
 </xs:schema>

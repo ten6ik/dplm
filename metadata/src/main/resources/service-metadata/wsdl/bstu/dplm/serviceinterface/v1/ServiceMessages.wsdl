@@ -106,6 +106,27 @@
     <wsdl:message name="UpdateMapObjectResponse">
         <wsdl:part name="response" element="ST:updateMapObjectResponse" />
     </wsdl:message>
+
+    <wsdl:message name="UpdateUserResultsRequest">
+        <wsdl:part name="request" element="ST:updateUserResultsRequest" />
+    </wsdl:message>
+    <wsdl:message name="UpdateUserResultsResponse">
+        <wsdl:part name="response" element="ST:updateUserResultsResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="RetrieveUserResultsRequest">
+        <wsdl:part name="request" element="ST:retrieveUserResultsRequest" />
+    </wsdl:message>
+    <wsdl:message name="RetrieveUserResultsResponse">
+        <wsdl:part name="response" element="ST:retrieveUserResultsResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="RetrieveUserRequest">
+        <wsdl:part name="request" element="ST:retrieveUserRequest" />
+    </wsdl:message>
+    <wsdl:message name="RetrieveUserResponse">
+        <wsdl:part name="response" element="ST:retrieveUserResponse" />
+    </wsdl:message>
     <!-- PORT TYPES -->
     <wsdl:portType name="ServiceInterface">
 
@@ -169,6 +190,20 @@
             <wsdl:output message="SI:UpdateMapObjectResponse"/>
         </wsdl:operation>
 
+        <wsdl:operation name="updateUserResults">
+            <wsdl:input message="SI:UpdateUserResultsRequest"/>
+            <wsdl:output message="SI:UpdateUserResultsResponse"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="retrieveUserResults">
+            <wsdl:input message="SI:RetrieveUserResultsRequest"/>
+            <wsdl:output message="SI:RetrieveUserResultsResponse"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="retrieveUser">
+            <wsdl:input message="SI:RetrieveUserRequest"/>
+            <wsdl:output message="SI:RetrieveUserResponse"/>
+        </wsdl:operation>
     </wsdl:portType>
 
 </wsdl:definitions>
