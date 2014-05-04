@@ -1,14 +1,39 @@
 package bstu.dplm.webservice;
 
-import bstu.dplm.dao.*;
+import bstu.dplm.dao.BodyLookDao;
+import bstu.dplm.dao.EyeLookDao;
+import bstu.dplm.dao.HairLookDao;
+import bstu.dplm.dao.LocationDao;
+import bstu.dplm.dao.PriviliegiesDao;
+import bstu.dplm.dao.UserDao;
 import bstu.dplm.model.game.Location;
 import bstu.dplm.model.user.BodyLook;
 import bstu.dplm.model.user.EyeLook;
 import bstu.dplm.model.user.HairLook;
 import bstu.dplm.model.user.User;
-import edu.schema.bstu.dplm.datatypes.v1.Look;
 import edu.schema.bstu.dplm.datatypes.v1.UserPriviliges;
-import edu.schema.bstu.dplm.servicetypes.v1.*;
+import edu.schema.bstu.dplm.servicetypes.v1.AuthorizeRequestType;
+import edu.schema.bstu.dplm.servicetypes.v1.AuthorizeResponseType;
+import edu.schema.bstu.dplm.servicetypes.v1.DeleteUserRequestType;
+import edu.schema.bstu.dplm.servicetypes.v1.DeleteUserResponseType;
+import edu.schema.bstu.dplm.servicetypes.v1.GetLocationRequestType;
+import edu.schema.bstu.dplm.servicetypes.v1.GetLocationResponseType;
+import edu.schema.bstu.dplm.servicetypes.v1.PingRequestType;
+import edu.schema.bstu.dplm.servicetypes.v1.PingResponseType;
+import edu.schema.bstu.dplm.servicetypes.v1.RetrieveLocationsRequestType;
+import edu.schema.bstu.dplm.servicetypes.v1.RetrieveLocationsResponseType;
+import edu.schema.bstu.dplm.servicetypes.v1.RetrieveLooksRequestType;
+import edu.schema.bstu.dplm.servicetypes.v1.RetrieveLooksResponseType;
+import edu.schema.bstu.dplm.servicetypes.v1.RetrievePriviligesRequestType;
+import edu.schema.bstu.dplm.servicetypes.v1.RetrievePriviligesResponseType;
+import edu.schema.bstu.dplm.servicetypes.v1.RetrieveUserByCriteriaRequestType;
+import edu.schema.bstu.dplm.servicetypes.v1.RetrieveUserByCriteriaResponseType;
+import edu.schema.bstu.dplm.servicetypes.v1.RetrieveUsersRequestType;
+import edu.schema.bstu.dplm.servicetypes.v1.RetrieveUsersResponseType;
+import edu.schema.bstu.dplm.servicetypes.v1.UpdateLocationRequestType;
+import edu.schema.bstu.dplm.servicetypes.v1.UpdateLocationResponseType;
+import edu.schema.bstu.dplm.servicetypes.v1.UpdateUserRequestType;
+import edu.schema.bstu.dplm.servicetypes.v1.UpdateUserResponseType;
 import edu.wsdl.bstu.dplm.serviceinterface.v1.ServiceInterface;
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
@@ -46,6 +71,8 @@ public class WebService implements ServiceInterface {
         UpdateUserResponseType resp = new UpdateUserResponseType();
 
         User daoUser = mapper.map(request.getUser(), User.class);
+
+        daoUser.updateReferences();
 
         User updatedDaoUser = userDao.saveOrUpdate(daoUser);
 

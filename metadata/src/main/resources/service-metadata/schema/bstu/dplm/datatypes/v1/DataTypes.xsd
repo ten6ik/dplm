@@ -68,7 +68,7 @@
             <xs:element name="eyeLook" type="DT:Look"/>
             <xs:element name="bodyLook" type="DT:Look"/>
             <xs:element ref="DT:priviliges" maxOccurs="unbounded"/>
-            <xs:element name="userResult" type="DT:UserResultsType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="results" type="DT:UserResultsType" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
 

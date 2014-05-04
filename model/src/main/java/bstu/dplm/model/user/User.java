@@ -2,7 +2,8 @@ package bstu.dplm.model.user;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.Cascade;
-import javax.persistence.CascadeType;
+import org.hibernate.annotations.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,11 +17,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-
-import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -136,7 +132,8 @@ public class User
         this.bodyLook = bodyLook;
     }
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany()
+    @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "user_privs", joinColumns = @JoinColumn(name = "ID_USR", nullable = false, updatable = false), inverseJoinColumns = @JoinColumn(name = "ID_PRIV", nullable = false, updatable = false))
     public Set<UserPriviliges> getPriviliges()
     {
@@ -148,8 +145,7 @@ public class User
         this.priviliges = priviliges;
     }
 
-    @OneToMany
-    @JoinColumn(name = "ID_USR")
+    @OneToMany(mappedBy = "user")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     public Set<UserResult> getResults()
     {
@@ -159,6 +155,14 @@ public class User
     public void setResults(Set<UserResult> results)
     {
         this.results = results;
+    }
+
+    public void updateReferences()
+    {
+        for (UserResult result : results)
+        {
+            result.setUser(this);
+        }
     }
 
     @Override

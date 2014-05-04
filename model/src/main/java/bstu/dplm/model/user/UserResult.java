@@ -4,6 +4,8 @@ import bstu.dplm.model.game.Answer;
 import bstu.dplm.model.game.Location;
 import bstu.dplm.model.game.Question;
 import bstu.dplm.model.game.Quiz;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,6 +26,7 @@ public class UserResult
     Question question;
     Answer answer;
     Location location;
+    User user;
 
     @Id
     @Column(name = "ID_RESULT", precision = 11, scale = 0)
@@ -116,5 +119,18 @@ public class UserResult
     public void setLocation(Location location)
     {
         this.location = location;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "ID_USR", nullable = false)
+    @Cascade(CascadeType.SAVE_UPDATE)
+    public User getUser()
+    {
+        return user;
+    }
+
+    public void setUser(User user)
+    {
+        this.user = user;
     }
 }
