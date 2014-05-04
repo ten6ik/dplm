@@ -165,6 +165,36 @@
             </wsdl:input>
         </wsdl:operation>
 
+        <wsdl:operation name="updateMark">
+            <soap:operation soapAction="updateMark" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+        </wsdl:operation>
+
+        <wsdl:operation name="completeQuiz">
+            <soap:operation soapAction="completeQuiz" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+        </wsdl:operation>
+
+        <wsdl:operation name="retrieveMarkForQuiz">
+            <soap:operation soapAction="retrieveMarkForQuiz" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+        </wsdl:operation>
+
     </wsdl:binding>
 
 </wsdl:definitions>

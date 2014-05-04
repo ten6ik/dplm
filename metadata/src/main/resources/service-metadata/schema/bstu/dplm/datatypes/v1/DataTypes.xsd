@@ -190,4 +190,15 @@
             <xs:element ref="DT:priviliges"/>
         </xs:choice>
     </xs:complexType>
+
+    <xs:complexType name="MarkType">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long" minOccurs="0"/>
+            <xs:element name="quiztId" type="xs:long"/>
+            <xs:element name="teacherLogin" type="xs:string"/>
+            <xs:element name="mark" type="xs:long" minOccurs="0"/>
+            <xs:element name="percent" type="xs:long" minOccurs="0"/>
+            <xs:element name="pupilLogin" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
 </xs:schema>

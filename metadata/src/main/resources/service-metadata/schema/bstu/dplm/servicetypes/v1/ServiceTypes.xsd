@@ -178,6 +178,44 @@
         </xs:sequence>
     </xs:complexType>
 
+    <xs:complexType name="UpdateMarkRequestType">
+        <xs:sequence>
+            <xs:element name="mark" type="DT:MarkType" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="UpdateMarkResponseType">
+        <xs:sequence>
+            <xs:element name="mark" type="DT:MarkType" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="CompleteQuizRequestType">
+        <xs:sequence>
+            <xs:element name="quiz" type="DT:QuizType" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="CompleteQuizResponseType">
+        <xs:sequence>
+            <xs:element name="userResult" type="DT:UserResultsType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="mark" type="DT:MarkType" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RetrieveMarkForQuizRequestType">
+        <xs:sequence>
+            <xs:element name="quiz" type="DT:QuizType" />
+            <xs:element name="pupilLogin" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RetrieveMarkForQuizResponseType">
+        <xs:sequence>
+            <xs:element name="userResult" type="DT:UserResultsType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="mark" type="DT:MarkType" />
+        </xs:sequence>
+    </xs:complexType>
 
     <xs:element name="pingRequest" type="ST:PingRequestType" />
     <xs:element name="pingResponse" type="ST:PingResponseType" />
@@ -215,4 +253,13 @@
 
     <xs:element name="retrieveUserRequest" type="ST:RetrieveUserRequestType" />
     <xs:element name="retrieveUserResponse" type="ST:RetrieveUserResponseType" />
+
+    <xs:element name="updateMarkRequest" type="ST:UpdateMarkRequestType" />
+    <xs:element name="updateMarkResponse" type="ST:UpdateMarkResponseType" />
+
+    <xs:element name="completeQuizRequest" type="ST:CompleteQuizRequestType" />
+    <xs:element name="completeQuizResponse" type="ST:CompleteQuizResponseType" />
+
+    <xs:element name="retrieveMarkForQuizRequest" type="ST:RetrieveMarkForQuizRequestType" />
+    <xs:element name="retrieveMarkForQuizResponse" type="ST:RetrieveMarkForQuizResponseType" />
 </xs:schema>

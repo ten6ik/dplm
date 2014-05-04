@@ -1,9 +1,7 @@
 package bstu.dplm.webservice;
 
 import bstu.dplm.dao.*;
-import bstu.dplm.model.game.Answer;
-import bstu.dplm.model.game.Location;
-import bstu.dplm.model.game.MapObject;
+import bstu.dplm.model.game.*;
 import bstu.dplm.model.user.*;
 import edu.schema.bstu.dplm.servicetypes.v1.AuthorizeRequestType;
 import edu.schema.bstu.dplm.servicetypes.v1.AuthorizeResponseType;
@@ -63,6 +61,36 @@ public class WebService implements ServiceInterface {
     MapObjectDao mapObjectDao;
     @Resource
     UserResultsDao userResultDao;
+    @Resource
+    MarkDao markDao;
+
+    @Override
+    public CompleteQuizResponseType completeQuiz(@WebParam(partName = "request", name = "completeQuizRequest", targetNamespace = "http://edu/schema/bstu/dplm/servicetypes/v1") CompleteQuizRequestType request) {
+
+        int rightResults = 0;
+        int maxResult = request.getQuiz().getQuestions().size();
+        CompleteQuizResponseType responseType = new CompleteQuizResponseType();
+
+        List<UserResult> userResults = userResultDao.getUserResultsByQuiz(mapper.map(request.getQuiz(), Quiz.class));
+
+        for (UserResult userResult : userResults) {
+            responseType.getUserResult().add(mapper.map(userResult, UserResultsType.class));
+            if (userResult.getIsRight()) {
+                rightResults++;
+            }
+        }
+        Mark mark = new Mark();
+        long percent = (rightResults / maxResult) * 100;
+        mark.setPercent(percent);
+        mark.setQuiztId(request.getQuiz().getId());
+        User teacher = userDao.getById(userResults.get(0).getLocation().getIdCreator());
+        mark.setTeacherLogin(teacher.getLogin());
+        mark.setPupilLogin(userDao.getById(userResults.get(0).getUserId()).getLogin());
+
+        responseType.setMark(mapper.map(markDao.saveOrUpdate(mark), MarkType.class));
+
+        return responseType;
+    }
 
     @Override
     public UpdateUserResultsResponseType updateUserResults(@WebParam(partName = "request", name = "updateUserResultsRequest", targetNamespace = "http://edu/schema/bstu/dplm/servicetypes/v1") UpdateUserResultsRequestType request) {
@@ -75,18 +103,17 @@ public class WebService implements ServiceInterface {
 
             throw new IllegalArgumentException("Answer is expected");
         }
-        for(AnswerType answer : request.getUserResult().getQuestion().getAnswers()){
+        for (AnswerType answer : request.getUserResult().getQuestion().getAnswers()) {
 
-            if(answer.getIsAnswer()){
-                if((userResult.getAnswer() != null && userResult.getAnswer().getId() == answer.getId())){
+            if (answer.getIsAnswer()) {
+                if ((userResult.getAnswer() != null && userResult.getAnswer().getId() == answer.getId())) {
                     userResult.setIsRight(true);
-                }
-                else if(userResult.getAnswerText().equals(answer.getText())){
+                } else if (userResult.getAnswerText().equals(answer.getText())) {
                     userResult.setIsRight(true);
 
                     userResult.setAnswer(new Answer());
                     userResult.getAnswer().setId(answer.getId());
-                }else{
+                } else {
                     userResult.setIsRight(false);
                 }
             }
@@ -111,6 +138,18 @@ public class WebService implements ServiceInterface {
         resp.setUser(mapper.map(updatedDaoUser, UserType.class));
 
         return resp;
+    }
+
+    @Override
+    public UpdateMarkResponseType updateMark(@WebParam(partName = "request", name = "updateMarkRequest", targetNamespace = "http://edu/schema/bstu/dplm/servicetypes/v1") UpdateMarkRequestType request) {
+
+        UpdateMarkResponseType responseType = new UpdateMarkResponseType();
+
+        Mark daoMark = mapper.map(request.getMark(), Mark.class);
+
+        responseType.setMark(mapper.map(markDao.saveOrUpdate(daoMark),MarkType.class));
+
+        return responseType;
     }
 
     @Override
@@ -162,6 +201,24 @@ public class WebService implements ServiceInterface {
         }
 
         return response;
+    }
+
+    @Override
+    public RetrieveMarkForQuizResponseType retrieveMarkForQuiz(@WebParam(partName = "request", name = "retrieveMarkForQuizRequest", targetNamespace = "http://edu/schema/bstu/dplm/servicetypes/v1") RetrieveMarkForQuizRequestType request) {
+
+        RetrieveMarkForQuizResponseType responseType = new RetrieveMarkForQuizResponseType();
+
+        Quiz quiz =  mapper.map(request.getQuiz(), Quiz.class);
+        Mark mark = markDao.getMark(request.getPupilLogin(), quiz);
+        List<UserResult> list = userResultDao.getUserResultsByQuiz(quiz);
+
+        for (UserResult userResult : list) {
+            responseType.getUserResult().add(mapper.map(userResult, UserResultsType.class));
+        }
+
+        responseType.setMark(mapper.map(mark, MarkType.class));
+
+        return responseType;
     }
 
     @Override

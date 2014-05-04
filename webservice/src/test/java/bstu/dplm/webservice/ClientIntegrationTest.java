@@ -185,9 +185,6 @@ public class ClientIntegrationTest {
         int after = getUserResults(user.getId()).size();
 
         assertThat("not added", after-before, is(1));
-
-
-       // user = updateUser(user);
     }
 
 
