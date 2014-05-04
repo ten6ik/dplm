@@ -68,6 +68,20 @@
             <xs:element name="eyeLook" type="DT:Look"/>
             <xs:element name="bodyLook" type="DT:Look"/>
             <xs:element ref="DT:priviliges" maxOccurs="unbounded"/>
+            <xs:element name="userResult" type="DT:UserResultsType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="UserResultsType">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long" minOccurs="0"/>
+            <xs:element name="isRight" type="xs:boolean"/>
+            <xs:element name="answerText" type="xs:string"/>
+            <xs:element name="sessionId" type="xs:string"/>
+            <xs:element name="quiz" type="DT:Quiz"/>
+            <xs:element name="question" type="DT:Question"/>
+            <xs:element name="answer" type="DT:Answer"/>
+            <xs:element name="location" type="DT:Location"/>
         </xs:sequence>
     </xs:complexType>
 

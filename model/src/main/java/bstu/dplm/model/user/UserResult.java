@@ -38,12 +38,12 @@ public class UserResult
     }
 
     @Column(name = "IS_RIGHT")
-    public boolean isRight()
+    public boolean getIsRight()
     {
         return isRight;
     }
 
-    public void setRight(boolean isRight)
+    public void setIsRight(boolean isRight)
     {
         this.isRight = isRight;
     }
