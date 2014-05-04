@@ -125,6 +125,16 @@
             </wsdl:input>
         </wsdl:operation>
 
+        <wsdl:operation name="updateMapObject">
+            <soap:operation soapAction="updateMapObject" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+        </wsdl:operation>
+
     </wsdl:binding>
 
 

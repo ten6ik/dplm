@@ -27,7 +27,6 @@
         <wsdl:part name="response" element="ST:pingResponse" />
     </wsdl:message>
 
-
     <!--User -->
     <wsdl:message name="UpdateUserRequest">
         <wsdl:part name="request" element="ST:updateUserRequest" />
@@ -57,8 +56,7 @@
         <wsdl:part name="response" element="ST:authorizeResponse" />
     </wsdl:message>
 
-
-    <!---->
+    <!--User additions-->
     <wsdl:message name="GetPrivsRequest">
         <wsdl:part name="request" element="ST:getPrivsRequest" />
     </wsdl:message>
@@ -80,6 +78,7 @@
         <wsdl:part name="response" element="ST:getUsersResponse" />
     </wsdl:message>
 
+    <!--Redactor-->
     <wsdl:message name="GetLocationsRequest">
         <wsdl:part name="request" element="ST:getLocationsRequest" />
     </wsdl:message>
@@ -101,32 +100,45 @@
         <wsdl:part name="response" element="ST:getLocationResponse" />
     </wsdl:message>
 
+    <wsdl:message name="UpdateMapObjectRequest">
+        <wsdl:part name="request" element="ST:updateMapObjectRequest" />
+    </wsdl:message>
+    <wsdl:message name="UpdateMapObjectResponse">
+        <wsdl:part name="response" element="ST:updateMapObjectResponse" />
+    </wsdl:message>
     <!-- PORT TYPES -->
     <wsdl:portType name="ServiceInterface">
+
         <wsdl:operation name="ping">
             <wsdl:input message="SI:PingRequest"/>
             <wsdl:output message="SI:PingResponse"/>
         </wsdl:operation>
+
         <wsdl:operation name="updateUser">
             <wsdl:input message="SI:UpdateUserRequest"/>
             <wsdl:output message="SI:UpdateUserResponse"/>
         </wsdl:operation>
+
         <wsdl:operation name="deleteUser">
             <wsdl:input message="SI:DeleteUserRequest"/>
             <wsdl:output message="SI:DeleteUserResponse"/>
         </wsdl:operation>
+
         <wsdl:operation name="searchUserByCriteria">
             <wsdl:input message="SI:SearchUserByCriteriaRequest"/>
             <wsdl:output message="SI:SearchUserByCriteriaResponse"/>
         </wsdl:operation>
+
         <wsdl:operation name="getPrivs">
             <wsdl:input message="SI:GetPrivsRequest"/>
             <wsdl:output message="SI:GetPrivsResponse"/>
         </wsdl:operation>
+
         <wsdl:operation name="getLooks">
             <wsdl:input message="SI:GetLooksRequest"/>
             <wsdl:output message="SI:GetLooksResponse"/>
         </wsdl:operation>
+
         <wsdl:operation name="getUsers">
             <wsdl:input message="SI:GetUsersRequest"/>
             <wsdl:output message="SI:GetUsersResponse"/>
@@ -150,6 +162,11 @@
         <wsdl:operation name="authorize">
             <wsdl:input message="SI:AuthorizeRequest"/>
             <wsdl:output message="SI:AuthorizeResponse"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="updateMapObject">
+            <wsdl:input message="SI:UpdateMapObjectRequest"/>
+            <wsdl:output message="SI:UpdateMapObjectResponse"/>
         </wsdl:operation>
 
     </wsdl:portType>

@@ -1,7 +1,7 @@
 package bstu.dplm.dozer;
 
-import edu.schema.bstu.dplm.datatypes.v1.Location;
-import edu.schema.bstu.dplm.datatypes.v1.LocationProperties;
+import edu.schema.bstu.dplm.datatypes.v1.LocationPropertiesType;
+import edu.schema.bstu.dplm.datatypes.v1.LocationType;
 import org.dozer.Mapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,9 +23,9 @@ public class MappingTest {
     @Test
     public void test()
     {
-        Location location = new Location();
+        LocationType location = new LocationType();
         location.setId(2l);
-        LocationProperties properties = new LocationProperties();
+        LocationPropertiesType properties = new LocationPropertiesType();
         properties.setId(1l);
         location.getProperties().add(properties);
 

@@ -1,17 +1,12 @@
 package bstu.dplm.webservice;
 
-import bstu.dplm.dao.BodyLookDao;
-import bstu.dplm.dao.EyeLookDao;
-import bstu.dplm.dao.HairLookDao;
-import bstu.dplm.dao.LocationDao;
-import bstu.dplm.dao.PriviliegiesDao;
-import bstu.dplm.dao.UserDao;
+import bstu.dplm.dao.*;
 import bstu.dplm.model.game.Location;
+import bstu.dplm.model.game.MapObject;
 import bstu.dplm.model.user.BodyLook;
 import bstu.dplm.model.user.EyeLook;
 import bstu.dplm.model.user.HairLook;
 import bstu.dplm.model.user.User;
-import edu.schema.bstu.dplm.datatypes.v1.UserPriviliges;
 import edu.schema.bstu.dplm.servicetypes.v1.AuthorizeRequestType;
 import edu.schema.bstu.dplm.servicetypes.v1.AuthorizeResponseType;
 import edu.schema.bstu.dplm.servicetypes.v1.DeleteUserRequestType;
@@ -34,6 +29,8 @@ import edu.schema.bstu.dplm.servicetypes.v1.UpdateLocationRequestType;
 import edu.schema.bstu.dplm.servicetypes.v1.UpdateLocationResponseType;
 import edu.schema.bstu.dplm.servicetypes.v1.UpdateUserRequestType;
 import edu.schema.bstu.dplm.servicetypes.v1.UpdateUserResponseType;
+import edu.schema.bstu.dplm.datatypes.v1.*;
+import edu.schema.bstu.dplm.servicetypes.v1.*;
 import edu.wsdl.bstu.dplm.serviceinterface.v1.ServiceInterface;
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
@@ -64,6 +61,8 @@ public class WebService implements ServiceInterface {
     UserDao userDao;
     @Resource
     LocationDao locationDao;
+    @Resource
+    MapObjectDao mapObjectDao;
 
     @Override
     public UpdateUserResponseType updateUser(@WebParam(partName = "request", name = "updateUserRequest", targetNamespace = "http://edu/schema/bstu/dplm/servicetypes/v1") UpdateUserRequestType request) {
@@ -76,7 +75,7 @@ public class WebService implements ServiceInterface {
 
         User updatedDaoUser = userDao.saveOrUpdate(daoUser);
 
-        resp.setUser(mapper.map(updatedDaoUser, edu.schema.bstu.dplm.datatypes.v1.User.class));
+        resp.setUser(mapper.map(updatedDaoUser, UserType.class));
 
         return resp;
     }
@@ -88,13 +87,25 @@ public class WebService implements ServiceInterface {
 
         List<User> userList = userDao.getAll();
 
-        List<edu.schema.bstu.dplm.datatypes.v1.User> responseList = new ArrayList<edu.schema.bstu.dplm.datatypes.v1.User>();
+        List<UserType> responseList = new ArrayList<UserType>();
 
         for (User user : userList) {
-            responseList.add(mapper.map(user, edu.schema.bstu.dplm.datatypes.v1.User.class));
+            responseList.add(mapper.map(user, UserType.class));
         }
 
         resp.setUsers(responseList);
+
+        return resp;
+    }
+
+    @Override
+    public UpdateMapObjectResponseType updateMapObject(@WebParam(partName = "request", name = "updateMapObjectRequest", targetNamespace = "http://edu/schema/bstu/dplm/servicetypes/v1") UpdateMapObjectRequestType request) {
+
+        UpdateMapObjectResponseType resp = new UpdateMapObjectResponseType();
+
+        MapObject mapObject = mapper.map(request.getMapObject(), MapObject.class);
+
+        resp.setMapObject(mapper.map(mapObjectDao.saveOrUpdate(mapObject), MapObjectType.class));
 
         return resp;
     }
@@ -106,11 +117,12 @@ public class WebService implements ServiceInterface {
 
         User user = userDao.authorize(request.getAuthorizeParameters().getLogin(), request.getAuthorizeParameters().getPassword());
 
-        resp.setUser(mapper.map(user, edu.schema.bstu.dplm.datatypes.v1.User.class));
+        resp.setUser(mapper.map(user, UserType.class));
 
         return resp;
     }
 
+    @Deprecated
     @Override
     public DeleteUserResponseType deleteUser(@WebParam(partName = "request", name = "deleteUserRequest", targetNamespace = "http://edu/schema/bstu/dplm/servicetypes/v1") DeleteUserRequestType request) {
 
@@ -145,9 +157,9 @@ public class WebService implements ServiceInterface {
         }
 
         List<User> list = userDao.searchUsers(login, start, end, priv);
-        List<edu.schema.bstu.dplm.datatypes.v1.User> respList = new ArrayList<edu.schema.bstu.dplm.datatypes.v1.User>();
+        List<UserType> respList = new ArrayList<UserType>();
         for (User user : list) {
-            respList.add(mapper.map(user, edu.schema.bstu.dplm.datatypes.v1.User.class));
+            respList.add(mapper.map(user, UserType.class));
         }
         resp.setUser(respList);
         return resp;
@@ -157,7 +169,7 @@ public class WebService implements ServiceInterface {
     public GetLocationResponseType getLocation(@WebParam(partName = "request", name = "getLocationRequest", targetNamespace = "http://edu/schema/bstu/dplm/servicetypes/v1") GetLocationRequestType request) {
 
         GetLocationResponseType response = new GetLocationResponseType();
-        response.setLocation(mapper.map(locationDao.getById(request.getId()), edu.schema.bstu.dplm.datatypes.v1.Location.class));
+        response.setLocation(mapper.map(locationDao.getById(request.getId()), LocationType.class));
         return response;
     }
 
@@ -169,18 +181,18 @@ public class WebService implements ServiceInterface {
         List<BodyLook> bodyLooks = bodyLookDao.getAll();
         List<HairLook> hairLooks = hairLookDao.getAll();
 
-        List<edu.schema.bstu.dplm.datatypes.v1.Look> responseEyeList = new ArrayList<edu.schema.bstu.dplm.datatypes.v1.Look>();
-        List<edu.schema.bstu.dplm.datatypes.v1.Look> responseBodyList = new ArrayList<edu.schema.bstu.dplm.datatypes.v1.Look>();
-        List<edu.schema.bstu.dplm.datatypes.v1.Look> responseHairList = new ArrayList<edu.schema.bstu.dplm.datatypes.v1.Look>();
+        List<LookType> responseEyeList = new ArrayList<LookType>();
+        List<LookType> responseBodyList = new ArrayList<LookType>();
+        List<LookType> responseHairList = new ArrayList<LookType>();
 
         for (EyeLook eyeLook : eyeLooks) {
-            responseEyeList.add(mapper.map(eyeLook, edu.schema.bstu.dplm.datatypes.v1.Look.class));
+            responseEyeList.add(mapper.map(eyeLook, LookType.class));
         }
         for (HairLook hairLook : hairLooks) {
-            responseHairList.add(mapper.map(hairLook, edu.schema.bstu.dplm.datatypes.v1.Look.class));
+            responseHairList.add(mapper.map(hairLook, LookType.class));
         }
         for (BodyLook bodyLook : bodyLooks) {
-            responseBodyList.add(mapper.map(bodyLook, edu.schema.bstu.dplm.datatypes.v1.Look.class));
+            responseBodyList.add(mapper.map(bodyLook, LookType.class));
         }
 
         resp.setBodyLook(responseBodyList);
@@ -204,10 +216,10 @@ public class WebService implements ServiceInterface {
         RetrieveLocationsResponseType resp = new RetrieveLocationsResponseType();
 
         List<Location> daoList = locationDao.getAll();
-        List<edu.schema.bstu.dplm.datatypes.v1.Location> responseList = new ArrayList<edu.schema.bstu.dplm.datatypes.v1.Location>();
+        List<LocationType> responseList = new ArrayList<LocationType>();
 
         for (Location location : daoList) {
-            responseList.add(mapper.map(location, edu.schema.bstu.dplm.datatypes.v1.Location.class));
+            responseList.add(mapper.map(location, LocationType.class));
         }
 
         resp.setLocation(responseList);
@@ -219,10 +231,10 @@ public class WebService implements ServiceInterface {
         RetrievePriviligesResponseType resp = new RetrievePriviligesResponseType();
 
         List<bstu.dplm.model.user.UserPriviliges> listDao = priviligiesDao.getAll();
-        List<UserPriviliges> responseList = new ArrayList<UserPriviliges>();
+        List<UserPriviligesType> responseList = new ArrayList<UserPriviligesType>();
 
         for (bstu.dplm.model.user.UserPriviliges privilige : listDao) {
-            responseList.add(mapper.map(privilige, UserPriviliges.class));
+            responseList.add(mapper.map(privilige, UserPriviligesType.class));
         }
 
         resp.setPriviliges(responseList);
@@ -241,7 +253,7 @@ public class WebService implements ServiceInterface {
 
         System.out.println(location);
 
-        response.setLocation(mapper.map(locationDao.saveOrUpdate(location), edu.schema.bstu.dplm.datatypes.v1.Location.class));
+        response.setLocation(mapper.map(locationDao.saveOrUpdate(location), LocationType.class));
 
         return response;
     }

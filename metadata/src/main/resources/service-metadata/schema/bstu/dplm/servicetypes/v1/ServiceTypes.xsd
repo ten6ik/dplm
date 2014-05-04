@@ -33,9 +33,9 @@
 
     <xs:complexType name="RetrieveLooksResponseType">
         <xs:sequence>
-            <xs:element name="eyeLook" type="DT:Look" minOccurs="0" maxOccurs="unbounded" />
-            <xs:element name="bodyLook" type="DT:Look" minOccurs="0" maxOccurs="unbounded" />
-            <xs:element name="hairLook" type="DT:Look" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="eyeLook" type="DT:LookType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="bodyLook" type="DT:LookType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="hairLook" type="DT:LookType" minOccurs="0" maxOccurs="unbounded" />
         </xs:sequence>
     </xs:complexType>
 
@@ -44,37 +44,37 @@
 
     <xs:complexType name="RetrieveUsersResponseType">
         <xs:sequence>
-            <xs:element name="users" type="DT:User" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="users" type="DT:UserType" minOccurs="0" maxOccurs="unbounded" />
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="RetrieveUserByCriteriaRequestType">
         <xs:sequence>
-            <xs:element name="searchUserCriteria" type="DT:searchUserParameters"/>
+            <xs:element name="searchUserCriteria" type="DT:SearchUserParametersType"/>
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="RetrieveUserByCriteriaResponseType">
         <xs:sequence>
-            <xs:element name="user" type="DT:User" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="user" type="DT:UserType" minOccurs="0" maxOccurs="unbounded" />
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="UpdateUserRequestType">
         <xs:sequence>
-            <xs:element name="user" type="DT:User"/>
+            <xs:element name="user" type="DT:UserType"/>
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="UpdateUserResponseType">
         <xs:sequence>
-            <xs:element name="user" type="DT:User"/>
+            <xs:element name="user" type="DT:UserType"/>
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="DeleteUserRequestType">
         <xs:sequence>
-            <xs:element name="user" type="DT:User"/>
+            <xs:element name="user" type="DT:UserType"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -89,19 +89,19 @@
 
     <xs:complexType name="RetrieveLocationsResponseType">
         <xs:sequence>
-            <xs:element name="location" type="DT:Location" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="location" type="DT:LocationType" minOccurs="0" maxOccurs="unbounded" />
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="UpdateLocationRequestType">
         <xs:sequence>
-            <xs:element name="location" type="DT:Location" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="location" type="DT:LocationType" minOccurs="1" maxOccurs="1"/>
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="UpdateLocationResponseType">
         <xs:sequence>
-            <xs:element name="location" type="DT:Location" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="location" type="DT:LocationType" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -113,24 +113,35 @@
 
     <xs:complexType name="GetLocationResponseType">
         <xs:sequence>
-            <xs:element name="location" type="DT:Location" />
+            <xs:element name="location" type="DT:LocationType" />
         </xs:sequence>
     </xs:complexType>
 
-
     <xs:complexType name="AuthorizeRequestType">
         <xs:sequence>
-            <xs:element name="authorizeParameters" type="DT:AuthorizeParameters" />
+            <xs:element name="authorizeParameters" type="DT:AuthorizeParametersType" />
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="AuthorizeResponseType">
         <xs:sequence>
-            <xs:element name="user" type="DT:User" />
+            <xs:element name="user" type="DT:UserType" />
         </xs:sequence>
     </xs:complexType>
 
 
+
+    <xs:complexType name="UpdateMapObjectRequestType">
+        <xs:sequence>
+            <xs:element name="mapObject" type="DT:MapObjectType" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="UpdateMapObjectResponseType">
+        <xs:sequence>
+            <xs:element name="mapObject" type="DT:MapObjectType" />
+        </xs:sequence>
+    </xs:complexType>
 
 
     <xs:element name="pingRequest" type="ST:PingRequestType" />
@@ -158,5 +169,8 @@
 
     <xs:element name="authorizeRequest" type="ST:AuthorizeRequestType" />
     <xs:element name="authorizeResponse" type="ST:AuthorizeResponseType" />
+
+    <xs:element name="updateMapObjectRequest" type="ST:UpdateMapObjectRequestType" />
+    <xs:element name="updateMapObjectResponse" type="ST:UpdateMapObjectResponseType" />
 
 </xs:schema>

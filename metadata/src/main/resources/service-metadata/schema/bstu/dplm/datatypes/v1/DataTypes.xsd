@@ -41,7 +41,7 @@
 		</xs:sequence>
 	</xs:complexType>
 
-    <xs:complexType name="Look">
+    <xs:complexType name="LookType">
         <xs:sequence>
             <xs:element name="id" type="xs:long"/>
             <xs:element name="comment" type="xs:string" minOccurs="0" maxOccurs="1"/>
@@ -49,7 +49,7 @@
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="UserPriviliges">
+    <xs:complexType name="UserPriviligesType">
         <xs:sequence>
             <xs:element name="id" type="xs:long"/>
             <xs:element name="name" type="xs:string"/>
@@ -57,16 +57,16 @@
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="User">
+    <xs:complexType name="UserType">
         <xs:sequence>
-            <xs:element name="id" type="xs:long"/>
-            <xs:element name="login" type="DT:UserLogin"/>
-            <xs:element name="password" type="DT:UserPassword"/>
-            <xs:element name="registration" type="DT:UserRegisterTime"/>
-            <xs:element name="lastSession" type="DT:UserLastSessionTime"/>
-            <xs:element name="hairLook" type="DT:Look"/>
-            <xs:element name="eyeLook" type="DT:Look"/>
-            <xs:element name="bodyLook" type="DT:Look"/>
+            <xs:element name="id" type="xs:long" minOccurs="0"/>
+            <xs:element name="login" type="DT:UserLoginType"/>
+            <xs:element name="password" type="DT:UserPasswordType"/>
+            <xs:element name="registration" type="DT:UserRegisterTimeType"/>
+            <xs:element name="lastSession" type="DT:UserLastSessionTimeType"/>
+            <xs:element name="hairLook" type="DT:LookType"/>
+            <xs:element name="eyeLook" type="DT:LookType"/>
+            <xs:element name="bodyLook" type="DT:LookType"/>
             <xs:element ref="DT:priviliges" maxOccurs="unbounded"/>
             <xs:element name="results" type="DT:UserResultsType" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
@@ -78,25 +78,25 @@
             <xs:element name="isRight" type="xs:boolean"/>
             <xs:element name="answerText" type="xs:string"/>
             <xs:element name="sessionId" type="xs:string"/>
-            <xs:element name="quiz" type="DT:Quiz"/>
-            <xs:element name="question" type="DT:Question"/>
-            <xs:element name="answer" type="DT:Answer"/>
-            <xs:element name="location" type="DT:Location"/>
+            <xs:element name="quiz" type="DT:QuizType"/>
+            <xs:element name="question" type="DT:QuestionType"/>
+            <xs:element name="answer" type="DT:AnswerType"/>
+            <xs:element name="location" type="DT:LocationType"/>
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="MapObject">
+    <xs:complexType name="MapObjectType">
         <xs:sequence>
             <xs:element name="id" type="xs:long" minOccurs="0"/>
             <xs:element name="name" type="xs:string"/>
             <xs:element name="comment" type="xs:string"/>
             <xs:element name="view" type="xs:string"/>
-            <xs:element name="function" type="DT:Function" maxOccurs="1" minOccurs="0"/>
-            <xs:element name="quiz" type="DT:Quiz" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="function" type="DT:FunctionType" maxOccurs="1" minOccurs="0"/>
+            <xs:element name="quiz" type="DT:QuizType" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="Answer">
+    <xs:complexType name="AnswerType">
         <xs:sequence>
             <xs:element name="id" type="xs:long" minOccurs="0"/>
             <xs:element name="text" type="xs:string"/>
@@ -104,23 +104,23 @@
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="Question">
+    <xs:complexType name="QuestionType">
         <xs:sequence>
             <xs:element name="id" type="xs:long" minOccurs="0"/>
             <xs:element name="text" type="xs:string"/>
-            <xs:element name="answers" type="DT:Answer" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element name="answers" type="DT:AnswerType" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="Quiz">
+    <xs:complexType name="QuizType">
         <xs:sequence>
             <xs:element name="id" type="xs:long" minOccurs="0"/>
             <xs:element name="name" type="xs:string"/>
-            <xs:element name="questions" type="DT:Question" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element name="questions" type="DT:QuestionType" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="Function">
+    <xs:complexType name="FunctionType">
         <xs:sequence>
             <xs:element name="id" type="xs:long" minOccurs="0"/>
             <xs:element name="function" type="xs:string"/>
@@ -128,65 +128,65 @@
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="Location">
+    <xs:complexType name="LocationType">
         <xs:sequence>
             <xs:element name="id" type="xs:long" minOccurs="0"/>
             <xs:element name="name" type="xs:string"/>
             <xs:element name="comment" type="xs:string" minOccurs="0" maxOccurs="1"/>
             <xs:element name="picture" type="xs:string"/>
             <xs:element name="created" type="xs:dateTime"/>
-            <xs:element name="properties" type="DT:LocationProperties" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:element name="properties" type="DT:LocationPropertiesType" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element name="idCreator" type="xs:long"/>
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="LocationProperties">
+    <xs:complexType name="LocationPropertiesType">
         <xs:sequence>
             <xs:element name="id" type="xs:long" minOccurs="0"/>
             <xs:element name="x" type="xs:string"/>
             <xs:element name="y" type="xs:string"/>
-            <xs:element name="mapObject" type="DT:MapObject"/>
+            <xs:element name="mapObject" type="DT:MapObjectType"/>
         </xs:sequence>
     </xs:complexType>
 
-    <xs:element name="priviliges" type="DT:UserPriviliges" />
+    <xs:element name="priviliges" type="DT:UserPriviligesType" />
 
-    <xs:simpleType name="UserLogin">
+    <xs:simpleType name="UserLoginType">
         <xs:restriction base="xs:string">
             <xs:maxLength value="50"/>
         </xs:restriction>
     </xs:simpleType>
 
-    <xs:simpleType name="UserPassword">
+    <xs:simpleType name="UserPasswordType">
         <xs:restriction base="xs:string">
             <xs:maxLength value="50"/>
         </xs:restriction>
     </xs:simpleType>
 
-    <xs:simpleType name="UserLastSessionTime">
+    <xs:simpleType name="UserLastSessionTimeType">
         <xs:restriction base="xs:dateTime">
             <xs:maxLength value="50"/>
         </xs:restriction>
     </xs:simpleType>
 
-    <xs:simpleType name="UserRegisterTime">
+    <xs:simpleType name="UserRegisterTimeType">
         <xs:restriction base="xs:dateTime">
             <xs:maxLength value="50"/>
         </xs:restriction>
     </xs:simpleType>
 
-    <xs:complexType name="AuthorizeParameters">
+    <xs:complexType name="AuthorizeParametersType">
         <xs:sequence>
-            <xs:element name="login" type="DT:UserLogin"/>
-            <xs:element name="password" type="DT:UserPassword"/>
+            <xs:element name="login" type="DT:UserLoginType"/>
+            <xs:element name="password" type="DT:UserPasswordType"/>
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="searchUserParameters">
+    <xs:complexType name="SearchUserParametersType">
         <xs:choice>
-            <xs:element name="login" type="DT:UserLogin"/>
-            <xs:element name="registration" type="DT:UserRegisterTime"/>
-            <xs:element name="lastSession" type="DT:UserLastSessionTime"/>
+            <xs:element name="login" type="DT:UserLoginType"/>
+            <xs:element name="registration" type="DT:UserRegisterTimeType"/>
+            <xs:element name="lastSession" type="DT:UserLastSessionTimeType"/>
             <xs:element ref="DT:priviliges"/>
         </xs:choice>
     </xs:complexType>
