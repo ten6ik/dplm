@@ -10,7 +10,7 @@ public class Mark {
     private long quiztId;
     private String teacherLogin;
     private int mark;
-    private long percent;
+    private float percent;
     private String pupilLogin;
 
     @Id
@@ -52,11 +52,11 @@ public class Mark {
     }
 
     @Column(name = "PERCENT", nullable = false, length = 200)
-    public long getPercent() {
+    public float getPercent() {
         return percent;
     }
 
-    public void setPercent(long percent) {
+    public void setPercent(float percent) {
         this.percent = percent;
     }
 

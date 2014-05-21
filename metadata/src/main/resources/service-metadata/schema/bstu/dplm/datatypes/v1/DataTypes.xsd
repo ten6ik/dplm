@@ -197,7 +197,7 @@
             <xs:element name="quiztId" type="xs:long"/>
             <xs:element name="teacherLogin" type="xs:string"/>
             <xs:element name="mark" type="xs:long" minOccurs="0"/>
-            <xs:element name="percent" type="xs:long" minOccurs="0"/>
+            <xs:element name="percent" type="xs:float" minOccurs="0"/>
             <xs:element name="pupilLogin" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>

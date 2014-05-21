@@ -192,6 +192,7 @@
 
     <xs:complexType name="CompleteQuizRequestType">
         <xs:sequence>
+            <xs:element name="pupilId" type="xs:long" />
             <xs:element name="quiz" type="DT:QuizType" />
         </xs:sequence>
     </xs:complexType>

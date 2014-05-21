@@ -1,5 +1,6 @@
 package bstu.dplm.webservice;
 
+import bstu.dplm.model.user.UserResult;
 import edu.schema.bstu.dplm.datatypes.v1.UserResultsType;
 import edu.schema.bstu.dplm.servicetypes.v1.*;
 import edu.schema.bstu.dplm.datatypes.v1.*;
@@ -27,8 +28,7 @@ public class ClientIntegrationTest {
     ServiceInterface serviceInterface;
 
     @Test
-    public void test()
-    {
+    public void test() {
         LocationType location = new LocationType();
         location.setName("Test location");
         location.setComment("Comment");
@@ -103,8 +103,7 @@ public class ClientIntegrationTest {
 
     }
 
-    public LocationType update(LocationType location)
-    {
+    public LocationType update(LocationType location) {
         UpdateLocationRequestType updateLocationRequestType = new UpdateLocationRequestType();
         updateLocationRequestType.setLocation(location);
 
@@ -119,7 +118,7 @@ public class ClientIntegrationTest {
     }
 
     @Test
-    public void authorizeUserTest(){
+    public void authorizeUserTest() {
         UserType user;
         AuthorizeRequestType request = new AuthorizeRequestType();
         AuthorizeParametersType parameters = new AuthorizeParametersType();
@@ -134,7 +133,7 @@ public class ClientIntegrationTest {
     }
 
     @Test
-    public void searchUserTest(){
+    public void searchUserTest() {
         List<UserType> users;
         RetrieveUserByCriteriaRequestType request = new RetrieveUserByCriteriaRequestType();
         SearchUserParametersType parameters = new SearchUserParametersType();
@@ -143,14 +142,13 @@ public class ClientIntegrationTest {
 
         RetrieveUserByCriteriaResponseType resp = serviceInterface.searchUserByCriteria(request);
         users = resp.getUser();
-        for(UserType user : users)
-        System.out.println(user.getId());
+        for (UserType user : users)
+            System.out.println(user.getId());
         System.out.println("\n\n\t\tDone");
     }
 
     @Test
-    public void saveUserProgress()
-    {
+    public void saveUserProgress() {
         RetrieveUserByCriteriaRequestType request = new RetrieveUserByCriteriaRequestType();
         SearchUserParametersType parameters = new SearchUserParametersType();
         parameters.setLogin("login");
@@ -184,11 +182,11 @@ public class ClientIntegrationTest {
 
         int after = getUserResults(user.getId()).size();
 
-        assertThat("not added", after-before, is(1));
+        assertThat("not added", after - before, is(1));
     }
 
 
-    List<UserResultsType> getUserResults(long userId){
+    List<UserResultsType> getUserResults(long userId) {
         RetrieveUserResultsRequestType retrieveUserResultsRequestType = new RetrieveUserResultsRequestType();
         retrieveUserResultsRequestType.setUserId(userId);
 
@@ -196,8 +194,7 @@ public class ClientIntegrationTest {
         return responseUR.getUserResult();
     }
 
-    UserType updateUser(UserType user)
-    {
+    UserType updateUser(UserType user) {
         UpdateUserRequestType request = new UpdateUserRequestType();
         request.setUser(user);
         UpdateUserResponseType response = serviceInterface.updateUser(request);
@@ -209,4 +206,191 @@ public class ClientIntegrationTest {
 
         return serviceInterface.searchUserByCriteria(request2).getUser().get(0);
     }
+
+    @Test
+    public void completeQuiz() {
+        RetrieveUserByCriteriaRequestType request = new RetrieveUserByCriteriaRequestType();
+        SearchUserParametersType parameters = new SearchUserParametersType();
+        parameters.setLogin("raziel");
+        request.setSearchUserCriteria(parameters);
+
+        RetrieveUserByCriteriaResponseType response = serviceInterface.searchUserByCriteria(request);
+        UserType user = response.getUser().get(0);
+        assertThat("User expected", user, is(notNullValue()));
+
+        //  RetrieveLocationsRequestType retrieveLocationsRequest = new RetrieveLocationsRequestType();
+        //  RetrieveLocationsResponseType responseL = serviceInterface.getLocations(retrieveLocationsRequest);
+
+        // LocationType location = responseL.getLocation().get(105);
+        //  assertThat("Location expected", location, is(notNullValue()));
+
+        LocationType location = new LocationType();
+        location.setName("Complete location");
+        location.setComment("Comment");
+        location.setPicture("Picture");
+        location.setCreated(Calendar.getInstance());
+        location.setIdCreator(user.getId());
+
+        LocationPropertiesType property = new LocationPropertiesType();
+        property.setX("123");
+        property.setY("321");
+        MapObjectType obj = new MapObjectType();
+        obj.setComment("Some dragon");
+        obj.setName("Gephest");
+        obj.setView("shadow picture");
+        property.setMapObject(obj);
+        location.getProperties().add(property);
+
+        FunctionType function = new FunctionType();
+        function.setComment("Some function");
+        function.setFunction("Sleeping");
+        location.getProperties().get(0).getMapObject().setFunction(function);
+
+        QuizType quiz = new QuizType();
+        quiz.setName("Wake the dragon");
+        location.getProperties().get(0).getMapObject().getQuiz().add(quiz);
+
+        QuestionType question = new QuestionType();
+        question.setText("How many fingers has the dragon?");
+        location.getProperties().get(0).getMapObject().getQuiz().get(0).getQuestions().add(question);
+
+        AnswerType answer = new AnswerType();
+        answer.setText("two");
+        answer.setIsAnswer(false);
+        question.getAnswers().add(answer);
+
+        AnswerType answer2 = new AnswerType();
+        answer2.setText("three");
+        answer2.setIsAnswer(false);
+        question.getAnswers().add(answer2);
+
+        AnswerType answer3 = new AnswerType();
+        answer3.setText("four");
+        answer3.setIsAnswer(true);
+        question.getAnswers().add(answer3);
+
+        QuestionType question2 = new QuestionType();
+        question2.setText("Where is diamond sword?");
+        location.getProperties().get(0).getMapObject().getQuiz().get(0).getQuestions().add(question2);
+
+        AnswerType answer12 = new AnswerType();
+        answer12.setText("here");
+        answer12.setIsAnswer(true);
+        question2.getAnswers().add(answer12);
+
+        AnswerType answer22 = new AnswerType();
+        answer22.setText("there");
+        answer22.setIsAnswer(false);
+        question2.getAnswers().add(answer22);
+
+        AnswerType answer32 = new AnswerType();
+        answer32.setText("nowhere");
+        answer32.setIsAnswer(false);
+        question2.getAnswers().add(answer32);
+
+        QuestionType question3 = new QuestionType();
+        question3.setText("Do you like dragons?");
+        location.getProperties().get(0).getMapObject().getQuiz().get(0).getQuestions().add(question3);
+
+        AnswerType answer13 = new AnswerType();
+        answer13.setText("yes");
+        answer13.setIsAnswer(true);
+        question3.getAnswers().add(answer13);
+
+        AnswerType answer23 = new AnswerType();
+        answer23.setText("no");
+        answer23.setIsAnswer(false);
+        question3.getAnswers().add(answer23);
+
+        location = update(location);
+
+        RetrieveUserByCriteriaRequestType requestPupil = new RetrieveUserByCriteriaRequestType();
+        SearchUserParametersType parametersForRequest = new SearchUserParametersType();
+        parametersForRequest.setLogin("login");
+        requestPupil.setSearchUserCriteria(parametersForRequest);
+
+        RetrieveUserByCriteriaResponseType responsePupil = serviceInterface.searchUserByCriteria(request);
+        UserType pupil = responsePupil.getUser().get(0);
+        assertThat("User expected", pupil, is(notNullValue()));
+
+        UserResultsType userResult1 = new UserResultsType();
+        userResult1.setSessionId("Pupil session " + new Date());
+
+        userResult1.setLocation(location);
+        userResult1.setQuiz(location.getProperties().get(0).getMapObject().getQuiz().get(0));
+
+
+        userResult1.setQuestion(userResult1.getQuiz().getQuestions().get(0));
+        userResult1.setAnswerText("three");
+        userResult1.setUserId(user.getId());
+
+        UpdateUserResultsRequestType resultsRequestType = new UpdateUserResultsRequestType();
+        resultsRequestType.setUserResult(userResult1);
+
+        serviceInterface.updateUserResults(resultsRequestType);
+
+        UserResultsType userResult2 = new UserResultsType();
+        userResult2.setSessionId("Pupil session " + new Date());
+
+        userResult2.setLocation(location);
+        userResult2.setQuiz(location.getProperties().get(0).getMapObject().getQuiz().get(0));
+
+
+        userResult2.setQuestion(userResult2.getQuiz().getQuestions().get(1));
+        userResult2.setAnswerText("here");
+        userResult2.setUserId(user.getId());
+
+        UpdateUserResultsRequestType resultsRequestType2 = new UpdateUserResultsRequestType();
+        resultsRequestType2.setUserResult(userResult2);
+
+        serviceInterface.updateUserResults(resultsRequestType2);
+
+        UserResultsType userResult3 = new UserResultsType();
+        userResult3.setSessionId("Pupil session " + new Date());
+
+        userResult3.setLocation(location);
+        userResult3.setQuiz(location.getProperties().get(0).getMapObject().getQuiz().get(0));
+
+
+        userResult3.setQuestion(userResult3.getQuiz().getQuestions().get(2));
+        AnswerType thirdAnswer = new AnswerType();
+        thirdAnswer.setId(userResult3.getQuiz().getQuestions().get(2).getAnswers().get(0).getId());
+        thirdAnswer.setText(userResult3.getQuiz().getQuestions().get(2).getAnswers().get(0).getText());
+        userResult3.setAnswer(thirdAnswer);
+        userResult3.setUserId(user.getId());
+
+        UpdateUserResultsRequestType resultsRequestType3 = new UpdateUserResultsRequestType();
+        resultsRequestType3.setUserResult(userResult3);
+
+        serviceInterface.updateUserResults(resultsRequestType3);
+
+        CompleteQuizRequestType completeQuizRequestType = new CompleteQuizRequestType();
+        completeQuizRequestType.setQuiz(userResult1.getQuiz());
+        completeQuizRequestType.setPupilId(userResult1.getUserId());
+
+        CompleteQuizResponseType completeQuizResponseType = serviceInterface.completeQuiz(completeQuizRequestType);//new CompleteQuizResponseType();
+        System.out.println(completeQuizResponseType.getMark());
+
+        for (UserResultsType result : completeQuizResponseType.getUserResult()) {
+            System.out.println(result.getAnswerText() + " is " + result.getIsRight());
+        }
+
+        // assertThat("not added", after-before, is(1));
+    }
+
+    @Test
+    public void testSometing(){
+
+        int first = 3;
+        int second = 8;
+        double firstD = 3;
+        double secondD = 8;
+
+        float result = (first / second);
+        float result2 = (first % second);
+        float result3 = (float)(firstD / secondD);
+        float result4 = (float)(firstD % secondD);
+        System.out.println(result + "    " +result2 + "     " + result3 + "    " + result4 + "   ");
+    }
+
 }

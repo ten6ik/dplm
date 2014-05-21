@@ -2,6 +2,7 @@ package bstu.dplm.dao;
 
 import bstu.dplm.model.game.Quiz;
 import bstu.dplm.model.user.UserResult;
+import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -19,8 +20,12 @@ public class UserResultsDao extends GenericDao<UserResult> {
         return this.sessionFactory.getCurrentSession().createCriteria(UserResult.class).add(Restrictions.eq("userId", id)).list();
     }
 
-    public List<UserResult> getUserResultsByQuiz(Quiz quiz){
+    public List<UserResult> getUserResultsByQuiz(long id){
 
-        return this.sessionFactory.getCurrentSession().createCriteria(UserResult.class).add(Restrictions.eq("quiz", quiz.getId())).list();
+        Query query = this.sessionFactory.getCurrentSession().createQuery("from UserResult where quiz.id = :code ");
+        query.setParameter("code", id);
+        List<UserResult> list = query.list();
+
+        return list;//this.sessionFactory.getCurrentSession().createCriteria(UserResult.class).createAlias("quiz", "lq").add(Restrictions.eq("lq.id", id)).list();
     }
 }
