@@ -135,6 +135,16 @@
             </wsdl:input>
         </wsdl:operation>
 
+        <wsdl:operation name="getMapObjectsByName">
+            <soap:operation soapAction="getMapObjectsByName" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+        </wsdl:operation>
+
         <wsdl:operation name="updateUserResults">
             <soap:operation soapAction="updateUserResults" style="document"/>
             <wsdl:input>

@@ -141,6 +141,18 @@
         </xs:sequence>
     </xs:complexType>
 
+    <xs:complexType name="RetrieveMapObjectsByNameRequestType">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RetrieveMapObjectsByNameResponseType">
+        <xs:sequence>
+            <xs:element name="mapObject" type="DT:MapObjectType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
     <xs:complexType name="UpdateUserResultsRequestType">
         <xs:sequence>
             <xs:element name="userResult" type="DT:UserResultsType" />
@@ -245,6 +257,8 @@
     <xs:element name="authorizeResponse" type="ST:AuthorizeResponseType" />
     <xs:element name="updateMapObjectRequest" type="ST:UpdateMapObjectRequestType" />
     <xs:element name="updateMapObjectResponse" type="ST:UpdateMapObjectResponseType" />
+    <xs:element name="retrieveMapObjectsByNameRequest" type="ST:RetrieveMapObjectsByNameRequestType" />
+    <xs:element name="retrieveMapObjectsByNameResponse" type="ST:RetrieveMapObjectsByNameResponseType" />
 
     <xs:element name="updateUserResultsRequest" type="ST:UpdateUserResultsRequestType" />
     <xs:element name="updateUserResultsResponse" type="ST:UpdateUserResultsResponseType" />

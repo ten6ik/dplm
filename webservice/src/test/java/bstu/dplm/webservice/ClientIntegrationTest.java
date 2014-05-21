@@ -393,4 +393,16 @@ public class ClientIntegrationTest {
         System.out.println(result + "    " +result2 + "     " + result3 + "    " + result4 + "   ");
     }
 
+    @Test
+    public void getMapObjectsTest() {
+        RetrieveMapObjectsByNameRequestType request = new RetrieveMapObjectsByNameRequestType();
+        request.setName("Gephest");
+
+        RetrieveMapObjectsByNameResponseType resp = serviceInterface.getMapObjectsByName(request);
+        List<MapObjectType> dragons = resp.getMapObject();
+        for (MapObjectType dragon : dragons)
+            System.out.println(dragon.getId() + " is a dragon named " + dragon.getName());
+        System.out.println("\n\n\t\tDone");
+    }
+
 }

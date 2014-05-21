@@ -311,6 +311,21 @@ public class WebService implements ServiceInterface {
     }
 
     @Override
+    public RetrieveMapObjectsByNameResponseType getMapObjectsByName(@WebParam(partName = "request", name = "retrieveMapObjectsByNameRequest", targetNamespace = "http://edu/schema/bstu/dplm/servicetypes/v1") RetrieveMapObjectsByNameRequestType request) {
+
+        RetrieveMapObjectsByNameResponseType responseType = new RetrieveMapObjectsByNameResponseType();
+
+        List<MapObject>mapObjectList = mapObjectDao.getMapObjectsByName(request.getName());
+
+        for (MapObject mapObject : mapObjectList)
+        {
+            responseType.getMapObject().add(mapper.map(mapObject, MapObjectType.class));
+        }
+
+        return responseType;
+    }
+
+    @Override
     public RetrieveMarkForQuizResponseType retrieveMarkForQuiz(@WebParam(partName = "request", name = "retrieveMarkForQuizRequest", targetNamespace = "http://edu/schema/bstu/dplm/servicetypes/v1") RetrieveMarkForQuizRequestType request) {
 
         RetrieveMarkForQuizResponseType responseType = new RetrieveMarkForQuizResponseType();

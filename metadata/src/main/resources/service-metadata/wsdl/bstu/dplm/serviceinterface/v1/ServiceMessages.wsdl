@@ -107,6 +107,13 @@
         <wsdl:part name="response" element="ST:updateMapObjectResponse"/>
     </wsdl:message>
 
+    <wsdl:message name="RetrieveMapObjectsByNameRequest">
+        <wsdl:part name="request" element="ST:retrieveMapObjectsByNameRequest"/>
+    </wsdl:message>
+    <wsdl:message name="RetrieveMapObjectsByNameResponse">
+        <wsdl:part name="response" element="ST:retrieveMapObjectsByNameResponse"/>
+    </wsdl:message>
+
     <wsdl:message name="UpdateUserResultsRequest">
         <wsdl:part name="request" element="ST:updateUserResultsRequest"/>
     </wsdl:message>
@@ -209,6 +216,11 @@
         <wsdl:operation name="updateMapObject">
             <wsdl:input message="SI:UpdateMapObjectRequest"/>
             <wsdl:output message="SI:UpdateMapObjectResponse"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getMapObjectsByName">
+            <wsdl:input message="SI:RetrieveMapObjectsByNameRequest"/>
+            <wsdl:output message="SI:RetrieveMapObjectsByNameResponse"/>
         </wsdl:operation>
 
         <wsdl:operation name="updateUserResults">
